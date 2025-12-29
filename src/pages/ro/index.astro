@@ -1,30 +1,55 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import LanguageSwitcher from '../../components/LanguageSwitcher.astro';
-import ContactForm from '../../components/ContactForm.astro';
-import { getTranslations } from '../../i18n/translations.js';
+import Layout from "../../layouts/Layout.astro";
+import LanguageSwitcher from "../../components/LanguageSwitcher.astro";
+import ContactForm from "../../components/ContactForm.astro";
+import { getTranslations } from "../../i18n/translations.js";
 
-const lang = 'ro';
+const lang = "ro";
 const t = getTranslations(lang);
 ---
 
 <Layout title="Moisuc Catalin — Dezvoltator Backend" lang={lang}>
   <!-- Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-void/80 backdrop-blur-md border-b border-border/50">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="/" class="font-display font-bold text-xl hover:text-accent transition-colors">
+  <nav
+    class="fixed left-0 right-0 top-0 z-50 border-b border-border/50 bg-void/80 backdrop-blur-md"
+  >
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <a
+        href="/"
+        class="font-display text-xl font-bold transition-colors hover:text-accent"
+      >
         moisuc<span class="text-accent">.dev</span>
       </a>
-      <div class="hidden md:flex items-center gap-8">
-        <a href="#about" class="text-sm text-muted hover:text-white transition-colors">{t.nav.about}</a>
-        <a href="#skills" class="text-sm text-muted hover:text-white transition-colors">{t.nav.skills}</a>
-        <a href="#projects" class="text-sm text-muted hover:text-white transition-colors">{t.nav.projects}</a>
-        <a href="#contact" class="text-sm text-muted hover:text-white transition-colors">{t.nav.contact}</a>
+      <div class="hidden items-center gap-8 md:flex">
+        <a
+          href="#about"
+          class="text-sm text-muted transition-colors hover:text-white"
+          >{t.nav.about}</a
+        >
+        <a
+          href="#skills"
+          class="text-sm text-muted transition-colors hover:text-white"
+          >{t.nav.skills}</a
+        >
+        <a
+          href="#projects"
+          class="text-sm text-muted transition-colors hover:text-white"
+          >{t.nav.projects}</a
+        >
+        <a
+          href="#contact"
+          class="text-sm text-muted transition-colors hover:text-white"
+          >{t.nav.contact}</a
+        >
       </div>
       <div class="flex items-center gap-4">
         <LanguageSwitcher currentLang={lang} />
-        <a href="#contact" class="hidden md:inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/30 rounded-full text-accent text-sm font-medium hover:bg-accent/20 transition-all">
-          <span class="w-2 h-2 bg-accent rounded-full animate-pulse-slow"></span>
+        <a
+          href="#contact"
+          class="hidden items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-sm font-medium text-accent transition-all hover:bg-accent/20 md:inline-flex"
+        >
+          <span class="h-2 w-2 animate-pulse-slow rounded-full bg-accent"
+          ></span>
           {t.nav.available}
         </a>
       </div>
@@ -33,44 +58,97 @@ const t = getTranslations(lang);
 
   <main>
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center pt-20 px-6">
-      <div class="max-w-4xl mx-auto text-center">
-        <div class="opacity-0 animate-slide-up stagger-1">
-          <p class="font-mono text-accent text-sm mb-6 tracking-wider">
-            <span class="text-muted">&lt;</span>{t.hero.tag}<span class="text-muted">/&gt;</span>
+    <section class="flex min-h-screen items-center justify-center px-6 pt-20">
+      <div class="mx-auto max-w-4xl text-center">
+        <div class="stagger-1 animate-slide-up opacity-0">
+          <p class="mb-6 font-mono text-sm tracking-wider text-accent">
+            <span class="text-muted">&lt;</span>{t.hero.tag}<span
+              class="text-muted">/&gt;</span
+            >
           </p>
         </div>
-        
-        <h1 class="font-display font-extrabold text-5xl md:text-7xl lg:text-8xl mb-6 opacity-0 animate-slide-up stagger-2">
+
+        <h1
+          class="stagger-2 mb-6 animate-slide-up font-display text-5xl font-extrabold opacity-0 md:text-7xl lg:text-8xl"
+        >
           <span class="block">Moisuc</span>
-          <span class="block bg-gradient-to-r from-white via-zinc-300 to-zinc-500 bg-clip-text text-transparent">Catalin</span>
+          <span
+            class="block bg-gradient-to-r from-white via-zinc-300 to-zinc-500 bg-clip-text text-transparent"
+            >Catalin</span
+          >
         </h1>
-        
-        <p class="text-xl md:text-2xl text-muted max-w-2xl mx-auto mb-8 opacity-0 animate-slide-up stagger-3" set:html={t.hero.subtitle} />
-        
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-slide-up stagger-4">
-          <a href="#projects" class="group px-8 py-4 bg-accent text-void font-semibold rounded-lg hover:bg-accent/90 transition-all flex items-center gap-2">
+
+        <p
+          class="stagger-3 mx-auto mb-8 max-w-2xl animate-slide-up text-xl text-muted opacity-0 md:text-2xl"
+          set:html={t.hero.subtitle}
+        />
+
+        <div
+          class="stagger-4 flex animate-slide-up flex-col items-center justify-center gap-4 opacity-0 sm:flex-row"
+        >
+          <a
+            href="#projects"
+            class="group flex items-center gap-2 rounded-lg bg-accent px-8 py-4 font-semibold text-void transition-all hover:bg-accent/90"
+          >
             {t.hero.cta}
-            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            <svg
+              class="h-4 w-4 transition-transform group-hover:translate-x-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
             </svg>
           </a>
-          <a href="#contact" class="px-8 py-4 border border-border text-white font-semibold rounded-lg hover:border-zinc-600 hover:bg-surface-light transition-all">
+          <a
+            href="#contact"
+            class="rounded-lg border border-border px-8 py-4 font-semibold text-white transition-all hover:border-zinc-600 hover:bg-surface-light"
+          >
             {t.hero.ctaSecondary}
           </a>
         </div>
-        
-        <div class="mt-16 flex items-center justify-center gap-8 text-muted opacity-0 animate-fade-in stagger-5">
+
+        <div
+          class="stagger-5 mt-16 flex animate-fade-in items-center justify-center gap-8 text-muted opacity-0"
+        >
           <div class="flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <svg
+              class="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
             </svg>
             <span class="text-sm">{t.hero.location}</span>
           </div>
           <div class="flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            <svg
+              class="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              ></path>
             </svg>
             <span class="text-sm">{t.hero.experience}</span>
           </div>
@@ -79,38 +157,50 @@ const t = getTranslations(lang);
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-32 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-16 items-center">
+    <section id="about" class="px-6 py-32">
+      <div class="mx-auto max-w-6xl">
+        <div class="grid items-center gap-16 md:grid-cols-2">
           <div>
-            <p class="font-mono text-accent text-sm mb-4">{t.about.tag}</p>
-            <h2 class="font-display font-bold text-4xl md:text-5xl mb-6">
-              {t.about.title}<br/>
+            <p class="mb-4 font-mono text-sm text-accent">{t.about.tag}</p>
+            <h2 class="mb-6 font-display text-4xl font-bold md:text-5xl">
+              {t.about.title}<br />
               <span class="text-muted">{t.about.titleAccent}</span>
             </h2>
-            <div class="space-y-4 text-zinc-400 leading-relaxed">
+            <div class="space-y-4 leading-relaxed text-zinc-400">
               <p>{t.about.p1}</p>
               <p>{t.about.p2}</p>
               <p>{t.about.p3}</p>
             </div>
           </div>
-          
+
           <div class="grid grid-cols-2 gap-4">
-            <div class="p-6 bg-surface rounded-2xl border border-border hover:border-accent/30 transition-colors">
-              <p class="font-display font-bold text-4xl text-accent mb-2">10+</p>
-              <p class="text-muted text-sm">{t.about.stats.years}</p>
+            <div
+              class="rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent/30"
+            >
+              <p class="mb-2 font-display text-4xl font-bold text-accent">
+                10+
+              </p>
+              <p class="text-sm text-muted">{t.about.stats.years}</p>
             </div>
-            <div class="p-6 bg-surface rounded-2xl border border-border hover:border-accent/30 transition-colors">
-              <p class="font-display font-bold text-4xl text-accent mb-2">250+</p>
-              <p class="text-muted text-sm">{t.about.stats.users}</p>
+            <div
+              class="rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent/30"
+            >
+              <p class="mb-2 font-display text-4xl font-bold text-accent">
+                250+
+              </p>
+              <p class="text-sm text-muted">{t.about.stats.users}</p>
             </div>
-            <div class="p-6 bg-surface rounded-2xl border border-border hover:border-accent/30 transition-colors">
-              <p class="font-display font-bold text-4xl text-accent mb-2">6</p>
-              <p class="text-muted text-sm">{t.about.stats.sports}</p>
+            <div
+              class="rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent/30"
+            >
+              <p class="mb-2 font-display text-4xl font-bold text-accent">6</p>
+              <p class="text-sm text-muted">{t.about.stats.sports}</p>
             </div>
-            <div class="p-6 bg-surface rounded-2xl border border-border hover:border-accent/30 transition-colors">
-              <p class="font-display font-bold text-4xl text-accent mb-2">∞</p>
-              <p class="text-muted text-sm">{t.about.stats.learning}</p>
+            <div
+              class="rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent/30"
+            >
+              <p class="mb-2 font-display text-4xl font-bold text-accent">∞</p>
+              <p class="text-sm text-muted">{t.about.stats.learning}</p>
             </div>
           </div>
         </div>
@@ -118,104 +208,256 @@ const t = getTranslations(lang);
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="py-32 px-6 bg-surface/50">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-          <p class="font-mono text-accent text-sm mb-4">{t.skills.tag}</p>
-          <h2 class="font-display font-bold text-4xl md:text-5xl">
-            {t.skills.title} <span class="text-muted">{t.skills.titleAccent}</span>
+    <section id="skills" class="bg-surface/50 px-6 py-32">
+      <div class="mx-auto max-w-6xl">
+        <div class="mb-16 text-center">
+          <p class="mb-4 font-mono text-sm text-accent">{t.skills.tag}</p>
+          <h2 class="font-display text-4xl font-bold md:text-5xl">
+            {t.skills.title}
+            <span class="text-muted">{t.skills.titleAccent}</span>
           </h2>
         </div>
-        
-        <div class="grid md:grid-cols-3 gap-8">
+
+        <div class="grid gap-8 md:grid-cols-3">
           <!-- Backend -->
-          <div class="p-8 bg-surface rounded-2xl border border-border group hover:border-accent/30 transition-all">
-            <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
-              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
+          <div
+            class="group rounded-2xl border border-border bg-surface p-8 transition-all hover:border-accent/30"
+          >
+            <div
+              class="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 transition-colors group-hover:bg-accent/20"
+            >
+              <svg
+                class="h-6 w-6 text-accent"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
+                ></path>
               </svg>
             </div>
-            <h3 class="font-display font-bold text-xl mb-4">{t.skills.backend}</h3>
+            <h3 class="mb-4 font-display text-xl font-bold">
+              {t.skills.backend}
+            </h3>
             <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">PHP</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Laravel</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Python</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">REST APIs</span>
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >PHP</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >Laravel</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >Python</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >REST APIs</span
+              >
             </div>
           </div>
-          
+
           <!-- Databases -->
-          <div class="p-8 bg-surface rounded-2xl border border-border group hover:border-accent/30 transition-all">
-            <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
-              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+          <div
+            class="group rounded-2xl border border-border bg-surface p-8 transition-all hover:border-accent/30"
+          >
+            <div
+              class="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 transition-colors group-hover:bg-accent/20"
+            >
+              <svg
+                class="h-6 w-6 text-accent"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+                ></path>
               </svg>
             </div>
-            <h3 class="font-display font-bold text-xl mb-4">{t.skills.databases}</h3>
+            <h3 class="mb-4 font-display text-xl font-bold">
+              {t.skills.databases}
+            </h3>
             <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">MySQL</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Redis</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">SQL</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Queues</span>
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >MySQL</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >Redis</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >SQL</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >Queues</span
+              >
             </div>
           </div>
-          
+
           <!-- Scraping -->
-          <div class="p-8 bg-surface rounded-2xl border border-border group hover:border-accent/30 transition-all">
-            <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
-              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+          <div
+            class="group rounded-2xl border border-border bg-surface p-8 transition-all hover:border-accent/30"
+          >
+            <div
+              class="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 transition-colors group-hover:bg-accent/20"
+            >
+              <svg
+                class="h-6 w-6 text-accent"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                ></path>
               </svg>
             </div>
-            <h3 class="font-display font-bold text-xl mb-4">{t.skills.scraping}</h3>
+            <h3 class="mb-4 font-display text-xl font-bold">
+              {t.skills.scraping}
+            </h3>
             <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Puppeteer</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Playwright</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Automation</span>
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >Puppeteer</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >Playwright</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >Automation</span
+              >
             </div>
           </div>
-          
+
           <!-- Frontend -->
-          <div class="p-8 bg-surface rounded-2xl border border-border group hover:border-accent/30 transition-all">
-            <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
-              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+          <div
+            class="group rounded-2xl border border-border bg-surface p-8 transition-all hover:border-accent/30"
+          >
+            <div
+              class="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 transition-colors group-hover:bg-accent/20"
+            >
+              <svg
+                class="h-6 w-6 text-accent"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
               </svg>
             </div>
-            <h3 class="font-display font-bold text-xl mb-4">{t.skills.frontend}</h3>
+            <h3 class="mb-4 font-display text-xl font-bold">
+              {t.skills.frontend}
+            </h3>
             <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">JavaScript</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">HTML</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">CSS</span>
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >JavaScript</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >HTML</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >CSS</span
+              >
             </div>
           </div>
-          
+
           <!-- Real-Time -->
-          <div class="p-8 bg-surface rounded-2xl border border-border group hover:border-accent/30 transition-all">
-            <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
-              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          <div
+            class="group rounded-2xl border border-border bg-surface p-8 transition-all hover:border-accent/30"
+          >
+            <div
+              class="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 transition-colors group-hover:bg-accent/20"
+            >
+              <svg
+                class="h-6 w-6 text-accent"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"></path>
               </svg>
             </div>
-            <h3 class="font-display font-bold text-xl mb-4">{t.skills.realtime}</h3>
+            <h3 class="mb-4 font-display text-xl font-bold">
+              {t.skills.realtime}
+            </h3>
             <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">WebSockets</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Events</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Telegram API</span>
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >WebSockets</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >Events</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >Telegram API</span
+              >
             </div>
           </div>
-          
+
           <!-- Learning -->
-          <div class="p-8 bg-surface rounded-2xl border border-border group hover:border-accent/30 transition-all">
-            <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
-              <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+          <div
+            class="group rounded-2xl border border-border bg-surface p-8 transition-all hover:border-accent/30"
+          >
+            <div
+              class="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 transition-colors group-hover:bg-accent/20"
+            >
+              <svg
+                class="h-6 w-6 text-accent"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                ></path>
               </svg>
             </div>
-            <h3 class="font-display font-bold text-xl mb-4">{t.skills.learning}</h3>
+            <h3 class="mb-4 font-display text-xl font-bold">
+              {t.skills.learning}
+            </h3>
             <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-accent/10 rounded-full text-sm text-accent border border-accent/30">Python</span>
-              <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Always Curious</span>
+              <span
+                class="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-sm text-accent"
+                >Python</span
+              >
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                >Always Curious</span
+              >
             </div>
           </div>
         </div>
@@ -223,191 +465,360 @@ const t = getTranslations(lang);
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="py-32 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-          <p class="font-mono text-accent text-sm mb-4">{t.projects.tag}</p>
-          <h2 class="font-display font-bold text-4xl md:text-5xl">
-            {t.projects.title} <span class="text-muted">{t.projects.titleAccent}</span>
+    <section id="projects" class="px-6 py-32">
+      <div class="mx-auto max-w-6xl">
+        <div class="mb-16 text-center">
+          <p class="mb-4 font-mono text-sm text-accent">{t.projects.tag}</p>
+          <h2 class="font-display text-4xl font-bold md:text-5xl">
+            {t.projects.title}
+            <span class="text-muted">{t.projects.titleAccent}</span>
           </h2>
         </div>
-        
+
         <!-- OddsMath - Featured Project -->
-        <div class="relative p-8 md:p-12 bg-surface rounded-3xl border border-border overflow-hidden group">
-          <div class="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-          
-          <div class="relative grid md:grid-cols-2 gap-12 items-center">
+        <div
+          class="group relative overflow-hidden rounded-3xl border border-border bg-surface p-8 md:p-12"
+        >
+          <div
+            class="absolute right-0 top-0 h-96 w-96 -translate-y-1/2 translate-x-1/2 rounded-full bg-accent/5 blur-3xl"
+          >
+          </div>
+
+          <div class="relative grid items-center gap-12 md:grid-cols-2">
             <div>
-              <div class="flex items-center gap-3 mb-6">
-                <span class="px-3 py-1 bg-accent/10 text-accent text-xs font-mono rounded-full border border-accent/30">{t.projects.liveProject}</span>
-                <span class="px-3 py-1 bg-surface-light text-muted text-xs font-mono rounded-full border border-border">2024</span>
+              <div class="mb-6 flex items-center gap-3">
+                <span
+                  class="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 font-mono text-xs text-accent"
+                  >{t.projects.liveProject}</span
+                >
+                <span
+                  class="rounded-full border border-border bg-surface-light px-3 py-1 font-mono text-xs text-muted"
+                  >2024</span
+                >
               </div>
-              
-              <h3 class="font-display font-bold text-3xl md:text-4xl mb-4">OddsMath</h3>
-              
-              <p class="text-zinc-400 mb-8 leading-relaxed">{t.projects.oddsmath.description}</p>
-              
-              <div class="grid grid-cols-2 gap-4 mb-8">
-                <div class="p-4 bg-surface-light rounded-xl border border-border">
-                  <p class="font-display font-bold text-2xl text-accent">250+</p>
-                  <p class="text-muted text-sm">{t.projects.oddsmath.subscribers}</p>
+
+              <h3 class="mb-4 font-display text-3xl font-bold md:text-4xl">
+                OddsMath
+              </h3>
+
+              <p class="mb-8 leading-relaxed text-zinc-400">
+                {t.projects.oddsmath.description}
+              </p>
+
+              <div class="mb-8 grid grid-cols-2 gap-4">
+                <div
+                  class="rounded-xl border border-border bg-surface-light p-4"
+                >
+                  <p class="font-display text-2xl font-bold text-accent">
+                    250+
+                  </p>
+                  <p class="text-sm text-muted">
+                    {t.projects.oddsmath.subscribers}
+                  </p>
                 </div>
-                <div class="p-4 bg-surface-light rounded-xl border border-border">
-                  <p class="font-display font-bold text-2xl text-accent">4</p>
-                  <p class="text-muted text-sm">{t.projects.oddsmath.bookmakers}</p>
+                <div
+                  class="rounded-xl border border-border bg-surface-light p-4"
+                >
+                  <p class="font-display text-2xl font-bold text-accent">4</p>
+                  <p class="text-sm text-muted">
+                    {t.projects.oddsmath.bookmakers}
+                  </p>
                 </div>
-                <div class="p-4 bg-surface-light rounded-xl border border-border">
-                  <p class="font-display font-bold text-2xl text-accent">6</p>
-                  <p class="text-muted text-sm">{t.projects.oddsmath.sports}</p>
+                <div
+                  class="rounded-xl border border-border bg-surface-light p-4"
+                >
+                  <p class="font-display text-2xl font-bold text-accent">6</p>
+                  <p class="text-sm text-muted">{t.projects.oddsmath.sports}</p>
                 </div>
-                <div class="p-4 bg-surface-light rounded-xl border border-border">
-                  <p class="font-display font-bold text-2xl text-accent">&lt;1s</p>
-                  <p class="text-muted text-sm">{t.projects.oddsmath.latency}</p>
+                <div
+                  class="rounded-xl border border-border bg-surface-light p-4"
+                >
+                  <p class="font-display text-2xl font-bold text-accent">
+                    &lt;1s
+                  </p>
+                  <p class="text-sm text-muted">
+                    {t.projects.oddsmath.latency}
+                  </p>
                 </div>
               </div>
-              
-              <div class="flex flex-wrap gap-2 mb-8">
-                <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Laravel</span>
-                <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Redis</span>
-                <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">MySQL</span>
-                <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Puppeteer</span>
-                <span class="px-3 py-1 bg-surface-light rounded-full text-sm text-zinc-300 border border-border">Telegram API</span>
+
+              <div class="mb-8 flex flex-wrap gap-2">
+                <span
+                  class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                  >Laravel</span
+                >
+                <span
+                  class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                  >Redis</span
+                >
+                <span
+                  class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                  >MySQL</span
+                >
+                <span
+                  class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                  >Puppeteer</span
+                >
+                <span
+                  class="rounded-full border border-border bg-surface-light px-3 py-1 text-sm text-zinc-300"
+                  >Telegram API</span
+                >
               </div>
-              
-              <a href="https://new.oddsmath.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-accent text-void font-semibold rounded-lg hover:bg-accent/90 transition-all group">
+
+              <a
+                href="https://new.oddsmath.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 font-semibold text-void transition-all hover:bg-accent/90"
+              >
                 {t.projects.oddsmath.visitSite}
-                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                <svg
+                  class="h-4 w-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  ></path>
                 </svg>
               </a>
             </div>
-            
+
             <div class="relative">
-              <div class="bg-void rounded-2xl border border-border overflow-hidden shadow-2xl">
-                <div class="flex items-center gap-2 px-4 py-3 bg-surface-light border-b border-border">
-                  <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
-                  <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
-                  <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
-                  <span class="ml-4 text-muted text-xs font-mono">odds-tracker.php</span>
+              <div
+                class="overflow-hidden rounded-2xl border border-border bg-void shadow-2xl"
+              >
+                <div
+                  class="flex items-center gap-2 border-b border-border bg-surface-light px-4 py-3"
+                >
+                  <span class="h-3 w-3 rounded-full bg-red-500/80"></span>
+                  <span class="h-3 w-3 rounded-full bg-yellow-500/80"></span>
+                  <span class="h-3 w-3 rounded-full bg-green-500/80"></span>
+                  <span class="ml-4 font-mono text-xs text-muted"
+                    >odds-tracker.php</span
+                  >
                 </div>
-                <pre class="p-6 text-sm font-mono overflow-x-auto"><code class="text-zinc-400"><span class="text-accent">class</span> <span class="text-white">OddsTracker</span>
-{
+                <pre
+                  class="overflow-x-auto p-6 font-mono text-sm">
+                  <code class="text-zinc-400"><span class="text-accent">class</span> <span class="text-white">OddsTracker</span>
+&lcub;
     <span class="text-accent">protected</span> <span class="text-muted">$redis</span>;
     <span class="text-accent">protected</span> <span class="text-muted">$bookmakers</span> = [<span class="text-yellow-400">4</span>];
     <span class="text-accent">protected</span> <span class="text-muted">$sports</span> = [<span class="text-yellow-400">6</span>];
 
     <span class="text-accent">public function</span> <span class="text-white">detectDrop</span>(<span class="text-muted">$event</span>)
-    {
+    &lcub;
         <span class="text-muted">// Real-time odds analysis</span>
-        <span class="text-accent">if</span> (<span class="text-muted">$this</span>-><span class="text-white">isSignificant</span>(<span class="text-muted">$event</span>)) {
+        <span class="text-accent">if</span> (<span class="text-muted">$this</span>-><span class="text-white">isSignificant</span>(<span class="text-muted">$event</span>)) &lcub;
             <span class="text-muted">$this</span>-><span class="text-white">notify</span>(<span class="text-muted">$event</span>);
-        }
-    }
+        &rcub;
+    &rcub;
 
     <span class="text-accent">public function</span> <span class="text-white">notify</span>(<span class="text-muted">$event</span>)
-    {
+    &lcub;
         <span class="text-white">Telegram</span>::<span class="text-white">send</span>(<span class="text-muted">$event</span>);
-    }
-}</code></pre>
+    &rcub;
+&rcub;</code></pre>
               </div>
             </div>
           </div>
         </div>
-        
+
         <!-- Additional Projects Grid -->
-        <div class="grid md:grid-cols-2 gap-6 mt-8">
-          <div class="p-8 bg-surface rounded-2xl border border-border hover:border-accent/30 transition-all group">
-            <div class="flex items-center justify-between mb-4">
-              <span class="px-3 py-1 bg-surface-light text-muted text-xs font-mono rounded-full border border-border">SCRAPING</span>
-              <svg class="w-5 h-5 text-muted group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+        <div class="mt-8 grid gap-6 md:grid-cols-2">
+          <div
+            class="group rounded-2xl border border-border bg-surface p-8 transition-all hover:border-accent/30"
+          >
+            <div class="mb-4 flex items-center justify-between">
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 font-mono text-xs text-muted"
+                >SCRAPING</span
+              >
+              <svg
+                class="h-5 w-5 text-muted transition-colors group-hover:text-accent"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                ></path>
               </svg>
             </div>
-            <h3 class="font-display font-bold text-xl mb-2">{t.projects.scrapers.title}</h3>
-            <p class="text-muted text-sm leading-relaxed">{t.projects.scrapers.description}</p>
+            <h3 class="mb-2 font-display text-xl font-bold">
+              {t.projects.scrapers.title}
+            </h3>
+            <p class="text-sm leading-relaxed text-muted">
+              {t.projects.scrapers.description}
+            </p>
           </div>
-          
-          <div class="p-8 bg-surface rounded-2xl border border-border hover:border-accent/30 transition-all group">
-            <div class="flex items-center justify-between mb-4">
-              <span class="px-3 py-1 bg-surface-light text-muted text-xs font-mono rounded-full border border-border">OPEN SOURCE</span>
-              <a href="https://github.com/moisuc" target="_blank" rel="noopener noreferrer" class="text-muted group-hover:text-accent transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+
+          <div
+            class="group rounded-2xl border border-border bg-surface p-8 transition-all hover:border-accent/30"
+          >
+            <div class="mb-4 flex items-center justify-between">
+              <span
+                class="rounded-full border border-border bg-surface-light px-3 py-1 font-mono text-xs text-muted"
+                >OPEN SOURCE</span
+              >
+              <a
+                href="https://github.com/moisuc"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-muted transition-colors group-hover:text-accent"
+              >
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                  ></path>
                 </svg>
               </a>
             </div>
-            <h3 class="font-display font-bold text-xl mb-2">{t.projects.leetcode.title}</h3>
-            <p class="text-muted text-sm leading-relaxed">{t.projects.leetcode.description}</p>
+            <h3 class="mb-2 font-display text-xl font-bold">
+              {t.projects.leetcode.title}
+            </h3>
+            <p class="text-sm leading-relaxed text-muted">
+              {t.projects.leetcode.description}
+            </p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-32 px-6 bg-surface/50">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-          <p class="font-mono text-accent text-sm mb-4">{t.contact.tag}</p>
-          <h2 class="font-display font-bold text-4xl md:text-5xl mb-6">
-            {t.contact.title}<br/>
+    <section id="contact" class="bg-surface/50 px-6 py-32">
+      <div class="mx-auto max-w-6xl">
+        <div class="mb-16 text-center">
+          <p class="mb-4 font-mono text-sm text-accent">{t.contact.tag}</p>
+          <h2 class="mb-6 font-display text-4xl font-bold md:text-5xl">
+            {t.contact.title}<br />
             <span class="text-muted">{t.contact.titleAccent}</span>
           </h2>
-          <p class="text-zinc-400 text-lg max-w-2xl mx-auto">{t.contact.subtitle}</p>
+          <p class="mx-auto max-w-2xl text-lg text-zinc-400">
+            {t.contact.subtitle}
+          </p>
         </div>
-        
-        <div class="grid md:grid-cols-2 gap-16 items-start">
+
+        <div class="grid items-start gap-16 md:grid-cols-2">
           <!-- Contact Form -->
           <ContactForm t={t.contact.form} />
-          
+
           <!-- Social Links -->
           <div class="space-y-8">
             <div>
-              <h3 class="font-display font-bold text-xl mb-6">Or connect directly</h3>
+              <h3 class="mb-6 font-display text-xl font-bold">
+                Or connect directly
+              </h3>
               <div class="space-y-4">
-                <a href="https://www.linkedin.com/in/moisuc-catalin/" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 p-4 bg-surface rounded-xl border border-border hover:border-accent/30 transition-all">
-                  <div class="w-12 h-12 bg-[#0077B5] rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                <a
+                  href="https://www.linkedin.com/in/moisuc-catalin/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group flex items-center gap-4 rounded-xl border border-border bg-surface p-4 transition-all hover:border-accent/30"
+                >
+                  <div
+                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-[#0077B5]"
+                  >
+                    <svg
+                      class="h-6 w-6 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                      ></path>
                     </svg>
                   </div>
                   <div>
-                    <p class="font-semibold text-white group-hover:text-accent transition-colors">{t.contact.linkedin}</p>
-                    <p class="text-sm text-muted">linkedin.com/in/moisuc-catalin</p>
+                    <p
+                      class="font-semibold text-white transition-colors group-hover:text-accent"
+                    >
+                      {t.contact.linkedin}
+                    </p>
+                    <p class="text-sm text-muted">
+                      linkedin.com/in/moisuc-catalin
+                    </p>
                   </div>
                 </a>
-                
-                <a href="https://github.com/moisuc" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 p-4 bg-surface rounded-xl border border-border hover:border-accent/30 transition-all">
-                  <div class="w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+
+                <a
+                  href="https://github.com/moisuc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group flex items-center gap-4 rounded-xl border border-border bg-surface p-4 transition-all hover:border-accent/30"
+                >
+                  <div
+                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-zinc-800"
+                  >
+                    <svg
+                      class="h-6 w-6 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                      ></path>
                     </svg>
                   </div>
                   <div>
-                    <p class="font-semibold text-white group-hover:text-accent transition-colors">{t.contact.github}</p>
+                    <p
+                      class="font-semibold text-white transition-colors group-hover:text-accent"
+                    >
+                      {t.contact.github}
+                    </p>
                     <p class="text-sm text-muted">github.com/moisuc</p>
                   </div>
                 </a>
-                
-                <a href="mailto:moisuc.catalin@gmail.com" class="group flex items-center gap-4 p-4 bg-surface rounded-xl border border-border hover:border-accent/30 transition-all">
-                  <div class="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+
+                <a
+                  href="mailto:moisuc.catalin@gmail.com"
+                  class="group flex items-center gap-4 rounded-xl border border-border bg-surface p-4 transition-all hover:border-accent/30"
+                >
+                  <div
+                    class="flex h-12 w-12 items-center justify-center rounded-lg bg-accent/20"
+                  >
+                    <svg
+                      class="h-6 w-6 text-accent"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      ></path>
                     </svg>
                   </div>
                   <div>
-                    <p class="font-semibold text-white group-hover:text-accent transition-colors">Email</p>
+                    <p
+                      class="font-semibold text-white transition-colors group-hover:text-accent"
+                    >
+                      Email
+                    </p>
                     <p class="text-sm text-muted">moisuc.catalin@gmail.com</p>
                   </div>
                 </a>
               </div>
             </div>
-            
-            <div class="p-6 bg-surface rounded-xl border border-border">
-              <div class="flex items-center gap-3 mb-2">
-                <span class="w-3 h-3 bg-accent rounded-full animate-pulse-slow"></span>
-                <span class="font-semibold text-white">{t.contact.availableProjects}</span>
+
+            <div class="rounded-xl border border-border bg-surface p-6">
+              <div class="mb-2 flex items-center gap-3">
+                <span class="h-3 w-3 animate-pulse-slow rounded-full bg-accent"
+                ></span>
+                <span class="font-semibold text-white"
+                  >{t.contact.availableProjects}</span
+                >
               </div>
-              <p class="text-muted text-sm">{t.hero.location}</p>
+              <p class="text-sm text-muted">{t.hero.location}</p>
             </div>
           </div>
         </div>
@@ -415,18 +826,34 @@ const t = getTranslations(lang);
     </section>
 
     <!-- Footer -->
-    <footer class="py-8 px-6 border-t border-border">
-      <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-muted text-sm">{t.footer.copyright}</p>
+    <footer class="border-t border-border px-6 py-8">
+      <div
+        class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row"
+      >
+        <p class="text-sm text-muted">{t.footer.copyright}</p>
         <div class="flex items-center gap-6">
-          <a href="https://github.com/moisuc" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          <a
+            href="https://github.com/moisuc"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-muted transition-colors hover:text-white"
+          >
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+              ></path>
             </svg>
           </a>
-          <a href="https://www.linkedin.com/in/moisuc-catalin/" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-white transition-colors">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+          <a
+            href="https://www.linkedin.com/in/moisuc-catalin/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-muted transition-colors hover:text-white"
+          >
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+              ></path>
             </svg>
           </a>
         </div>
