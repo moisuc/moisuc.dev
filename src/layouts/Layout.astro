@@ -1,0 +1,91 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  lang?: 'en' | 'ro';
+}
+
+const { 
+  title, 
+  description = "Backend Developer with 10+ years of experience building web applications, real-time systems, and data extraction tools.",
+  lang = 'en'
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const alternateEN = new URL('/', Astro.site);
+const alternateRO = new URL('/ro', Astro.site);
+---
+
+<!doctype html>
+<html lang={lang} class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="author" content="Moisuc Catalin" />
+    
+    <!-- Canonical & Alternate Languages -->
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="en" href={alternateEN} />
+    <link rel="alternate" hreflang="ro" href={alternateRO} />
+    <link rel="alternate" hreflang="x-default" href={alternateEN} />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:locale" content={lang === 'ro' ? 'ro_RO' : 'en_US'} />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-void text-zinc-100 font-body antialiased selection:bg-accent/30 selection:text-white">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 197, 94, 0.08), transparent),
+      radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.03), transparent);
+  }
+  
+  ::selection {
+    background: rgba(34, 197, 94, 0.3);
+  }
+  
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #111113;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a2d;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3a3a3d;
+  }
+  
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+  .stagger-6 { animation-delay: 0.6s; }
+</style>

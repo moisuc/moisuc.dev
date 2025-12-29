@@ -1,14 +1,14 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import LanguageSwitcher from '../components/LanguageSwitcher.astro';
-import ContactForm from '../components/ContactForm.astro';
-import { getTranslations } from '../i18n/translations.js';
+import Layout from '../../layouts/Layout.astro';
+import LanguageSwitcher from '../../components/LanguageSwitcher.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { getTranslations } from '../../i18n/translations.js';
 
-const lang = 'en';
+const lang = 'ro';
 const t = getTranslations(lang);
 ---
 
-<Layout title="Moisuc Catalin — Backend Developer" lang={lang}>
+<Layout title="Moisuc Catalin — Dezvoltator Backend" lang={lang}>
   <!-- Navigation -->
   <nav class="fixed top-0 left-0 right-0 z-50 bg-void/80 backdrop-blur-md border-b border-border/50">
     <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">

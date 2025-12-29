@@ -1,0 +1,45 @@
+---
+interface Props {
+  currentLang: 'en' | 'ro';
+}
+
+const { currentLang } = Astro.props;
+---
+
+<div class="flex items-center gap-1 bg-surface-light rounded-full p-1 border border-border">
+  <a 
+    href="/"
+    data-lang="en"
+    class:list={[
+      "lang-switch px-3 py-1 rounded-full text-sm font-medium transition-all",
+      currentLang === 'en' 
+        ? "bg-accent text-void" 
+        : "text-muted hover:text-white"
+    ]}
+  >
+    EN
+  </a>
+  <a 
+    href="/ro"
+    data-lang="ro"
+    class:list={[
+      "lang-switch px-3 py-1 rounded-full text-sm font-medium transition-all",
+      currentLang === 'ro' 
+        ? "bg-accent text-void" 
+        : "text-muted hover:text-white"
+    ]}
+  >
+    RO
+  </a>
+</div>
+
+<script is:inline>
+  // Set cookie when user manually switches language
+  document.querySelectorAll('.lang-switch').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const lang = e.target.dataset.lang;
+      // Set cookie for 1 year to remember preference
+      document.cookie = `preferred_lang=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+    });
+  });
+</script>
