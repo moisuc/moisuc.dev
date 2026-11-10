@@ -1,0 +1,13 @@
+---
+import { games } from "../../games-tudor/games.js";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return games.map((g) => ({ params: { slug: g.slug }, props: { html: g.html } }));
+}
+
+const { html } = Astro.props;
+---
+
+<Fragment set:html={html} />

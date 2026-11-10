@@ -1,0 +1,116 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const {
+  games,
+  basePath,
+  heading = "Jocuri",
+  description = "Jocuri educative și mini-jocuri, gratis, direct în browser.",
+} = Astro.props;
+---
+
+<Layout title={`${heading} — moisuc.dev`} description={description} lang="ro">
+  <nav
+    class="fixed left-0 right-0 top-0 z-50 border-b border-border/50 bg-void/80 backdrop-blur-md"
+  >
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <a
+        href="/"
+        class="font-display text-xl font-bold transition-colors hover:text-accent"
+      >
+        moisuc<span class="text-accent">.dev</span>
+      </a>
+      <a
+        href="/ro"
+        class="group flex items-center gap-2 text-sm text-muted transition-colors hover:text-white"
+      >
+        <svg
+          class="h-4 w-4 transition-transform group-hover:-translate-x-1"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M7 16l-4-4m0 0l4-4m-4 4h18"></path>
+        </svg>
+        Înapoi acasă
+      </a>
+    </div>
+  </nav>
+
+  <main class="relative overflow-hidden px-6 pb-32 pt-36">
+    <div
+      class="pointer-events-none absolute left-1/2 top-0 h-96 w-[40rem] -translate-x-1/2 rounded-full bg-accent/10 blur-3xl"
+    >
+    </div>
+
+    <div class="relative mx-auto max-w-6xl">
+      <header class="mb-16 max-w-2xl">
+        <p
+          class="stagger-1 animate-slide-up font-mono text-sm tracking-wider text-accent opacity-0"
+        >
+          <span class="text-muted">&lt;</span>joacă<span class="text-muted"
+            >/&gt;</span
+          >
+        </p>
+        <h1
+          class="stagger-2 mt-4 animate-slide-up font-display text-5xl font-extrabold opacity-0 md:text-7xl"
+        >
+          {heading}<span class="text-accent">.</span>
+        </h1>
+        <p
+          class="stagger-3 mt-6 animate-slide-up text-lg text-muted opacity-0 md:text-xl"
+        >
+          Mini-jocuri educative, direct în browser. Fără cont, fără instalare.
+        </p>
+      </header>
+
+      {
+        games.length === 0 ? (
+          <p class="text-muted">Jocurile vin în curând.</p>
+        ) : (
+          <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {games.map((g, i) => (
+              <li class="stagger-4 animate-slide-up opacity-0">
+                <a
+                  href={`${basePath}/${g.slug}`}
+                  class="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface p-8 transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:bg-surface-light"
+                >
+                  <div class="pointer-events-none absolute right-0 top-0 h-40 w-40 -translate-y-1/2 translate-x-1/2 rounded-full bg-accent/5 blur-2xl transition-colors duration-300 group-hover:bg-accent/15" />
+                  <span class="relative font-mono text-sm text-accent">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h2 class="relative mt-6 font-display text-2xl font-bold">
+                    {g.title}
+                  </h2>
+                  {g.description && (
+                    <p class="relative mt-3 text-muted">{g.description}</p>
+                  )}
+                  <span class="relative mt-auto flex items-center gap-2 pt-8 text-sm font-semibold text-accent">
+                    Joacă acum
+                    <svg
+                      class="h-4 w-4 transition-transform group-hover:translate-x-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </main>
+</Layout>

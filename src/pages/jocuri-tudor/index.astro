@@ -1,0 +1,8 @@
+---
+import GamesList from "../../components/GamesList.astro";
+import { games } from "../../games-tudor/games.js";
+
+export const prerender = true;
+---
+
+<GamesList games={games} basePath="/jocuri-tudor" heading="Jocuri Tudor" />
