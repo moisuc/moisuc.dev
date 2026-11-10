@@ -17,6 +17,9 @@ export const games = Object.entries(files)
   .map(([path, html]) => {
     const name = path.replace(/^\.\//, "").replace(/\.html$/, "");
     const title = html.match(/<title>([^<]*)<\/title>/i)?.[1]?.trim() || name;
-    return { slug: slugify(name), title, html };
+    const description =
+      html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i)?.[1]?.trim() ||
+      "";
+    return { slug: slugify(name), title, description, html };
   })
   .sort((a, b) => a.title.localeCompare(b.title, "ro"));
