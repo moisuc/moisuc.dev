@@ -1,0 +1,962 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Cursa Calculelor</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Layout: culoar de cursă (temă: spațiu / pădure / iarnă) pentru fiecare elev sau echipă deasupra; dedesubt, fiecare elev are panoul lui cu propriul calcul pe coloane și tastatura lui. Mate, albinuța, comentează. */
+:root {
+  --bg: #EEF5F4;
+  --surface: #FFFFFF;
+  --surface-2: #E3EFEE;
+  --ink: #12343B;
+  --muted: #4A676D;
+  --line: #BCD3D1;
+  --accent: #0E7C86;
+  --accent-ink: #FFFFFF;
+  --sun: #F5B700;
+  --good: #1B8A4B;
+  --good-bg: #DDF3E6;
+  --oops: #B4530B;
+  --oops-bg: #FDEBD8;
+  --p1: #2F6FED;
+  --p2: #E8590C;
+  --p3: #1E9E55;
+  --p4: #8A3FFC;
+  --tr-bg: #22305F;
+  --tr-tick: #A9BBFF;
+  --f-display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --f-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C2227; --surface: #143238; --surface-2: #1B3F46; --ink: #E7F4F3; --muted: #9EC3C6;
+    --line: #2B4F56; --accent: #3CC0CB; --accent-ink: #06262B; --sun: #FFC933;
+    --good: #5ED38F; --good-bg: #153B2A; --oops: #FFB070; --oops-bg: #46290F;
+    --p1: #6C9BFF; --p2: #FF8A4C; --p3: #4CD38A; --p4: #B58CFF;
+    color-scheme: dark;
+  }
+  :root:not([data-theme="light"]) .swatch, :root:not([data-theme="light"]) .pawn, :root:not([data-theme="light"]) .av-btn { color: #06141A; }
+}
+:root[data-theme="dark"] {
+  --bg: #0C2227; --surface: #143238; --surface-2: #1B3F46; --ink: #E7F4F3; --muted: #9EC3C6;
+  --line: #2B4F56; --accent: #3CC0CB; --accent-ink: #06262B; --sun: #FFC933;
+  --good: #5ED38F; --good-bg: #153B2A; --oops: #FFB070; --oops-bg: #46290F;
+  --p1: #6C9BFF; --p2: #FF8A4C; --p3: #4CD38A; --p4: #B58CFF;
+  color-scheme: dark;
+}
+:root[data-theme="dark"] .swatch, :root[data-theme="dark"] .pawn, :root[data-theme="dark"] .av-btn { color: #06141A; }
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 18px;
+  padding-block: 10px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font-family: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible { outline: 4px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--f-display); margin: 0; text-wrap: balance; }
+.screen { height: 100%; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+.screen[hidden] { display: none !important; }
+
+/* ---------- Mate ---------- */
+.mate { flex: none; width: 70px; height: 64px; }
+.mate svg { width: 100%; height: 100%; overflow: visible; }
+.mate .wing { transform-box: fill-box; transform-origin: 80% 90%; animation: flap .22s ease-in-out infinite alternate; }
+@keyframes flap { to { transform: rotate(-16deg); } }
+.mate.happy { animation: hopm .6s ease; }
+.mate.cheer { animation: wig .5s ease-in-out 4; }
+.mate.try { animation: nod .7s ease; }
+@keyframes hopm { 40% { transform: translateY(-12px); } }
+@keyframes wig { 25% { transform: rotate(-9deg) translateY(-6px); } 75% { transform: rotate(9deg) translateY(-6px); } }
+@keyframes nod { 30% { transform: rotate(-6deg); } 60% { transform: rotate(4deg); } }
+
+/* ---------- Setări ---------- */
+.setup { overflow-y: auto; align-items: center; }
+.setup-card { width: 100%; max-width: 980px; background: var(--surface); border: 2px solid var(--line); border-radius: 22px; padding: clamp(16px, 3vw, 32px); display: grid; gap: 18px; margin-block: auto; }
+.setup-head { display: flex; align-items: center; gap: 16px; }
+.setup-head .mate { width: 104px; height: 96px; }
+.setup-head h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1; font-weight: 800; color: var(--accent); }
+.setup-head p { margin: 4px 0 0; color: var(--muted); font-weight: 700; }
+.field { display: grid; gap: 8px; }
+.field > .lbl { font-weight: 800; font-size: 1.05rem; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.field .note { margin: 0; font-weight: 700; color: var(--muted); }
+.seg { display: flex; flex-wrap: wrap; gap: 10px; }
+.seg button { flex: 1 1 140px; min-height: 64px; padding: 8px 14px; font-size: 1.25rem; font-weight: 800; background: var(--surface-2); border: 3px solid transparent; border-radius: 16px; }
+.seg button small { display: block; font-size: .85rem; font-weight: 700; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.seg button[aria-pressed="true"] small { color: var(--accent-ink); opacity: .9; }
+.seg button:disabled { opacity: .45; cursor: not-allowed; }
+.names { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+.name-in { display: flex; align-items: center; gap: 10px; background: var(--surface-2); border-radius: 16px; padding: 8px 12px; }
+.name-in input { flex: 1; min-width: 0; font: inherit; font-weight: 800; font-size: 1.2rem; border: 2px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 12px; padding: 8px 10px; }
+.av-btn { flex: none; width: 52px; height: 52px; border-radius: 14px; border: 3px solid var(--surface); display: grid; place-items: center; color: #fff; padding: 0; }
+.av-btn svg, .swatch svg, .pawn svg { width: 62%; height: 62%; }
+.swatch { flex: none; width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; color: #fff; }
+.c1 { background: var(--p1); } .c2 { background: var(--p2); } .c3 { background: var(--p3); } .c4 { background: var(--p4); }
+.big-btn { min-height: 76px; border: 0; border-radius: 20px; background: var(--accent); color: var(--accent-ink); font-family: var(--f-display); font-weight: 800; font-size: 2rem; padding: 8px 28px; box-shadow: 0 6px 0 rgba(0,0,0,.18); }
+.big-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 rgba(0,0,0,.18); }
+.big-btn.alt { background: var(--surface-2); color: var(--ink); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+/* ---------- Joc ---------- */
+.topbar { display: flex; align-items: center; gap: 10px; }
+.chip { font-family: var(--f-display); font-weight: 800; font-size: 1.25rem; background: var(--surface); border: 2px solid var(--line); border-radius: 999px; padding: 4px 18px; white-space: nowrap; }
+.bee-say { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; }
+.bubble { flex: 1; min-width: 0; background: var(--surface); border: 2px solid var(--line); border-radius: 18px; padding: 8px 16px; font-weight: 800; font-size: clamp(1.05rem, 1.8vw, 1.5rem); line-height: 1.25; }
+.bubble .mname { font-family: var(--f-display); color: var(--accent); margin-right: .5em; }
+.bubble .mname::after { content: ":"; }
+.bubble.good { background: var(--good-bg); border-color: var(--good); color: var(--good); }
+.bubble.good .mname { color: var(--good); }
+.mini { min-height: 48px; padding: 4px 14px; font-weight: 800; font-size: 1rem; background: var(--surface); border: 2px solid var(--line); border-radius: 14px; }
+
+.lanes { display: grid; grid-template-columns: repeat(var(--lc, 1), 1fr); gap: 8px; }
+.lane { position: relative; display: grid; grid-template-columns: minmax(130px, 30%) 1fr; align-items: center; gap: 10px; background: var(--surface); border: 2px solid var(--line); border-radius: 16px; padding: 4px 12px 4px 8px; }
+.who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.who .nm { font-weight: 800; font-size: clamp(.95rem, 1.5vw, 1.3rem); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.who .pts { font-family: var(--f-display); font-weight: 800; font-size: 1.2rem; margin-left: auto; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.track { --pw: 40px; position: relative; height: 46px; }
+.track::before { content: ""; position: absolute; left: calc(var(--pw) / 2); right: calc(var(--pw) / 2); top: 50%; height: 16px; margin-top: -8px; background: var(--tr-bg); border-radius: 9px; }
+.fillbar { position: absolute; left: calc(var(--pw) / 2); top: 50%; height: 8px; margin-top: -4px; border-radius: 5px; width: calc((100% - var(--pw)) * var(--p)); transition: width .7s ease; }
+.tick { position: absolute; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; background: var(--tr-tick); opacity: .85; }
+.th-space .tick { clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; }
+.th-forest .tick { border-radius: 0 100% 0 100%; }
+.th-winter .tick { border-radius: 50%; }
+.tick.bonus { width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 0; opacity: 1; background: var(--sun); clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+.tick.bonus.used { opacity: .3; }
+.fin { position: absolute; right: 0; top: 50%; width: var(--pw); height: var(--pw); margin-top: calc(var(--pw) / -2); }
+.fin svg { width: 100%; height: 100%; }
+.pawn { position: absolute; top: 50%; width: var(--pw); height: var(--pw); margin-top: calc(var(--pw) / -2); border-radius: 13px; display: grid; place-items: center; color: #fff; border: 3px solid var(--surface); left: calc((100% - var(--pw)) * var(--p)); transition: left .7s cubic-bezier(.3,1.4,.5,1); z-index: 2; }
+.pawn.hop { animation: hop .6s ease; }
+@keyframes hop { 40% { transform: translateY(-14px) scale(1.12); } }
+.spark { position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; margin: -4px; border-radius: 2px; pointer-events: none; z-index: 5; animation: pop 1.1s ease-out forwards; }
+@keyframes pop { from { transform: translate(0, 0) scale(1); opacity: 1; } to { transform: translate(var(--dx), var(--dy)) scale(.4) rotate(240deg); opacity: 0; } }
+
+.stage { flex: 1; min-height: 0; overflow-y: auto; display: grid; }
+.panels { display: grid; grid-template-columns: repeat(var(--pcols, 1), 1fr); gap: 10px; align-content: stretch; min-width: 0; }
+.panel { container-type: inline-size; background: var(--surface); border: 4px solid var(--pc); border-radius: 20px; padding: 8px 10px 10px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.panel.good { background: var(--good-bg); }
+.panel.oops { background: var(--oops-bg); }
+.phead { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.phead .nm { font-weight: 800; font-size: clamp(1rem, 1.6vw, 1.35rem); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.phead .pst { margin-left: auto; font-weight: 800; font-size: clamp(.85rem, 1.2vw, 1.05rem); color: var(--muted); text-align: right; }
+.panel.good .pst { color: var(--good); }
+.panel.oops .pst, .pst.retry { color: var(--oops); }
+.pbody { display: grid; gap: 8px; }
+.pleft { display: grid; justify-items: center; align-content: center; }
+
+/* calcul pe coloane: cifrele în căsuțe S Z U (M), semnul pe primul rând, în dreapta numărului */
+.pgrid { display: grid; grid-template-columns: repeat(var(--cols), 1.1em) .9em; font-family: var(--f-display); font-weight: 800; font-size: clamp(1.8rem, min(10.5cqw, 6.2vh), 3.8rem); line-height: 1.12; font-variant-numeric: tabular-nums; }
+.pgrid .lb { font-size: .3em; line-height: 1.6; text-align: center; color: var(--muted); letter-spacing: .08em; }
+.pgrid .c { text-align: center; border-right: .035em solid var(--line); min-height: 1.12em; }
+.pgrid .c.f { border-left: .035em solid var(--line); }
+.pgrid .sg { padding-left: .25em; text-align: left; color: var(--accent); }
+.pgrid hr { grid-column: 1 / -1; width: 100%; border: 0; border-top: .07em solid var(--ink); margin: .06em 0; }
+.ab { font: inherit; color: var(--ink); background: var(--surface); border: .05em solid var(--line); border-radius: .2em; margin: .04em; padding: 0; min-height: 1.04em; line-height: 1; }
+.ab.cur { border-color: var(--accent); border-style: dashed; box-shadow: 0 0 0 .05em color-mix(in srgb, var(--accent) 35%, transparent); }
+.ab.good { border-color: var(--good); color: var(--good); }
+.ab.oops { border-color: var(--oops); color: var(--oops); }
+.ab:disabled { opacity: 1; cursor: default; }
+.cb { font: inherit; font-size: .5em; color: var(--accent); background: transparent; border: .1em dashed var(--line); border-radius: .3em; margin: .1em .18em; padding: 0; min-height: 1.1em; line-height: 1; }
+.cb.cur { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.cb.oops { border-color: var(--oops); color: var(--oops); }
+.cb:disabled { opacity: 1; cursor: default; }
+.hint { font-weight: 800; font-size: clamp(.8rem, 1.1vw, 1rem); color: var(--muted); text-align: center; }
+
+.kp { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: min(100%, 250px); justify-self: center; }
+.kp button { min-height: clamp(44px, 6.2vh, 66px); font-family: var(--f-display); font-weight: 800; font-size: clamp(1.2rem, 3vh, 1.9rem); background: var(--surface); border: 3px solid var(--line); border-radius: 14px; box-shadow: 0 4px 0 var(--line); padding: 0; }
+.kp button:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--line); }
+.kp button:disabled { opacity: .45; }
+.kp .del { background: var(--surface-2); }
+.kp .zero { grid-column: span 2; }
+.kp .ok { grid-column: 1 / -1; min-height: clamp(58px, 8.8vh, 88px); font-size: clamp(1.4rem, 3.8vh, 2.3rem); margin-top: 2px; background: var(--accent); color: var(--accent-ink); border-color: var(--accent); box-shadow: 0 4px 0 rgba(0,0,0,.2); }
+@container (min-width: 520px) { .pbody { grid-template-columns: 1fr auto; align-items: center; } .kp { width: 230px; } }
+
+/* ---------- Cupa ---------- */
+.cupov { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; overflow: hidden; background: color-mix(in srgb, var(--bg) 84%, transparent); padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.cupbox { position: relative; z-index: 2; background: var(--surface); border: 4px solid var(--sun); border-radius: 28px; padding: clamp(18px, 3vw, 40px); display: grid; justify-items: center; gap: 12px; text-align: center; max-width: 720px; width: 100%; }
+.cupbox h2 { font-size: clamp(2rem, 5.5vw, 4rem); color: var(--accent); line-height: 1.05; }
+.cupbox p { margin: 0; font-weight: 800; font-size: clamp(1.1rem, 2.2vw, 1.7rem); }
+.cupbox .cupsvg svg { width: clamp(120px, 22vh, 220px); height: auto; animation: bounce 1.2s ease-in-out infinite; }
+@keyframes bounce { 50% { transform: translateY(-10px) rotate(-3deg); } }
+.confetti { position: absolute; top: -30px; width: 12px; height: 18px; border-radius: 3px; animation: fall 3.2s linear forwards; z-index: 1; }
+@keyframes fall { to { transform: translateY(115vh) rotate(600deg); } }
+
+/* ---------- Final ---------- */
+.end { overflow-y: auto; align-items: center; }
+.end-card { width: 100%; max-width: 900px; margin-block: auto; background: var(--surface); border: 2px solid var(--line); border-radius: 22px; padding: clamp(16px, 3vw, 32px); display: grid; gap: 14px; justify-items: center; text-align: center; }
+.end-card h2 { font-size: clamp(2rem, 5vw, 3.4rem); color: var(--accent); }
+.end-card h3 { font-size: 1.5rem; color: var(--muted); }
+.end-card .cupsvg svg { width: 120px; height: auto; }
+.rank, .badges { width: 100%; display: grid; gap: 10px; }
+.rank-row { display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 14px; background: var(--surface-2); border-radius: 18px; padding: 10px 16px; text-align: left; }
+.rank-row.first { background: var(--good-bg); border: 3px solid var(--good); }
+.rank-row .place { font-family: var(--f-display); font-weight: 800; font-size: 2.2rem; text-align: center; font-variant-numeric: tabular-nums; }
+.rank-row .nm { font-weight: 800; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.rank-row .nm small { display: block; font-size: .85rem; color: var(--muted); font-weight: 700; }
+.rank-row .sc { font-family: var(--f-display); font-weight: 800; font-size: 1.4rem; white-space: nowrap; }
+.brow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: var(--surface-2); border-radius: 18px; padding: 8px 14px; text-align: left; }
+.brow .nm { font-weight: 800; font-size: 1.25rem; display: flex; align-items: center; gap: 10px; min-width: 150px; }
+.bchip { display: inline-flex; align-items: center; gap: 6px; font-weight: 800; font-size: 1.05rem; background: var(--surface); border: 2px solid var(--bc); color: var(--ink); border-radius: 999px; padding: 4px 14px 4px 8px; }
+.bchip svg { width: 26px; height: 26px; }
+.stars { font-size: 3rem; letter-spacing: .15em; color: var(--sun); }
+
+@media (max-width: 900px) {
+  .screen { height: auto; }
+  .stage { overflow: visible; }
+  .lanes { grid-template-columns: 1fr; }
+  .lane { grid-template-columns: 1fr; gap: 4px; }
+  .panels { grid-template-columns: 1fr; }
+  .topbar { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fillbar, .pawn { transition: none; }
+  .pawn.hop, .cupbox .cupsvg svg, .mate .wing, .mate.happy, .mate.cheer, .mate.try { animation: none; }
+  .confetti, .spark { display: none; }
+}
+</style>
+
+<div id="app" style="height:100%">
+
+  <!-- SETĂRI -->
+  <section class="screen setup" id="s-setup">
+    <div class="setup-card">
+      <div class="setup-head">
+        <div class="mate" id="mate-setup"></div>
+        <div>
+          <h1>Cursa Calculelor</h1>
+          <p>Salut! Eu sunt Mate, albinuța matematicii. Fiecare elev are calculele lui. Cine ajunge primul la finiș?</p>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="lbl">Câți elevi joacă?</span>
+        <div class="seg" id="seg-players" role="group" aria-label="Număr de elevi"></div>
+      </div>
+      <div class="field">
+        <span class="lbl">Numele elevilor și pionul ales (atinge pionul ca să-l schimbi)</span>
+        <div class="names" id="names"></div>
+      </div>
+      <div class="field">
+        <span class="lbl">Cum jucăm?</span>
+        <div class="seg" id="seg-mode" role="group" aria-label="Mod de joc"></div>
+      </div>
+      <div class="field">
+        <span class="lbl">Tema traseului</span>
+        <div class="seg" id="seg-theme" role="group" aria-label="Tema traseului"></div>
+      </div>
+      <div class="field">
+        <span class="lbl">Operații</span>
+        <div class="seg" id="seg-op" role="group" aria-label="Operații"></div>
+      </div>
+      <div class="field">
+        <span class="lbl">Tipul calculelor</span>
+        <div class="seg" id="seg-level" role="group" aria-label="Tipul calculelor"></div>
+      </div>
+      <div class="field">
+        <span class="lbl">Lungimea traseului (calcule corecte până la finiș, pentru fiecare elev)</span>
+        <div class="seg" id="seg-target" role="group" aria-label="Lungimea traseului"></div>
+      </div>
+      <div class="field">
+        <span class="lbl">Sunet</span>
+        <div class="seg" id="seg-sound" role="group" aria-label="Sunet"></div>
+      </div>
+      <div style="display:flex;justify-content:center"><button class="big-btn" id="btn-start" type="button">Începem cursa!</button></div>
+    </div>
+  </section>
+
+  <!-- JOC -->
+  <section class="screen" id="s-game" hidden>
+    <div class="topbar">
+      <div class="chip" id="goal"></div>
+      <div class="bee-say">
+        <div class="mate" id="mate"></div>
+        <div class="bubble" id="bubble" aria-live="polite"></div>
+      </div>
+      <button class="mini" id="btn-snd" type="button"></button>
+      <button class="mini" id="btn-rank" type="button">Clasament</button>
+      <button class="mini" id="btn-quit" type="button">Setări</button>
+    </div>
+
+    <div class="lanes" id="lanes"></div>
+
+    <div class="stage">
+      <div class="panels" id="panels"></div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="screen end" id="s-end" hidden>
+    <div class="end-card">
+      <div class="cupsvg" id="end-cup" hidden></div>
+      <h2 id="end-title"></h2>
+      <div class="stars" id="end-stars" hidden></div>
+      <div class="rank" id="rank"></div>
+      <h3>Insigne</h3>
+      <div class="badges" id="badges"></div>
+      <p id="end-note" style="margin:0;font-weight:800;font-size:1.3rem"></p>
+      <div class="actions">
+        <button class="big-btn" id="btn-again" type="button">Mai jucăm o dată</button>
+        <button class="big-btn alt" id="btn-settings" type="button">Alte setări</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUPA PENTRU PRIMUL LA FINIȘ -->
+  <div class="cupov" id="cup" hidden>
+    <div class="cupbox" role="dialog" aria-labelledby="cup-title">
+      <div class="cupsvg" id="cup-svg"></div>
+      <h2 id="cup-title"></h2>
+      <p id="cup-sub"></p>
+      <div class="actions">
+        <button class="big-btn" id="cup-go" type="button">Continuăm</button>
+        <button class="big-btn alt" id="cup-end" type="button">Vezi clasamentul</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/*GEN*/
+function ri(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+function ones(n) { return n % 10; }
+function tens(n) { return Math.floor(n / 10) % 10; }
+function addCarries(a, b) {
+  var cu = (ones(a) + ones(b) >= 10) ? 1 : 0;
+  var ct = (tens(a) + tens(b) + cu >= 10) ? 1 : 0;
+  return !!(cu || ct);
+}
+function subBorrows(a, b) {
+  var bu = ones(a) < ones(b) ? 1 : 0;
+  var bt = tens(a) < tens(b) + bu ? 1 : 0;
+  return !!(bu || bt);
+}
+function genAdd(carry) {
+  for (var i = 0; i < 2000; i++) {
+    var a, b;
+    if (carry) {
+      a = Math.random() < 0.8 ? ri(100, 985) : ri(12, 99);
+      b = Math.random() < 0.7 ? ri(100, 985) : ri(12, 99);
+      if (b < 10 || a + b > 1000) continue;
+      if (addCarries(a, b)) return { a: a, b: b, sign: '+', ans: a + b, carry: true };
+    } else {
+      var ah = ri(1, 8), at = ri(0, 8), au = ri(0, 8);
+      var bh = Math.random() < 0.4 ? 0 : ri(0, 9 - ah);
+      var bt = ri(0, 9 - at), bu = ri(0, 9 - au);
+      a = ah * 100 + at * 10 + au; b = bh * 100 + bt * 10 + bu;
+      if (b < 10 || a < 10) continue;
+      if (!addCarries(a, b)) return { a: a, b: b, sign: '+', ans: a + b, carry: false };
+    }
+  }
+  return carry ? { a: 358, b: 267, sign: '+', ans: 625, carry: true } : { a: 213, b: 365, sign: '+', ans: 578, carry: false };
+}
+function genSub(borrow) {
+  for (var i = 0; i < 2000; i++) {
+    var a, b;
+    if (borrow) {
+      a = ri(101, 1000);
+      b = Math.random() < 0.3 ? ri(12, Math.min(99, a - 1)) : ri(100, a - 1);
+      if (b < 10 || b >= a) continue;
+      if (subBorrows(a, b)) return { a: a, b: b, sign: '−', ans: a - b, carry: true };
+    } else {
+      var ah = ri(1, 9), at = ri(0, 9), au = ri(0, 9);
+      var bh = Math.random() < 0.4 ? 0 : ri(0, ah);
+      var bt = ri(0, at), bu = ri(0, au);
+      a = ah * 100 + at * 10 + au; b = bh * 100 + bt * 10 + bu;
+      if (b < 10 || b >= a) continue;
+      if (!subBorrows(a, b)) return { a: a, b: b, sign: '−', ans: a - b, carry: false };
+    }
+  }
+  return borrow ? { a: 623, b: 258, sign: '−', ans: 365, carry: true } : { a: 786, b: 423, sign: '−', ans: 363, carry: false };
+}
+function genProblem(level, op, last) {
+  for (var i = 0; i < 20; i++) {
+    var carry = level === 'cu' ? true : level === 'fara' ? false : Math.random() < 0.5;
+    var add = op === 'add' ? true : op === 'sub' ? false : Math.random() < 0.5;
+    var p = add ? genAdd(carry) : genSub(carry);
+    if (!last || last.a !== p.a || last.b !== p.b || last.sign !== p.sign) return p;
+  }
+  return p;
+}
+function carriesOf(pr, cols) {
+  var c = [0, 0, 0, 0];
+  function dg(n, i) { return Math.floor(n / Math.pow(10, i)) % 10; }
+  for (var i = 1; i < cols; i++) {
+    var x = dg(pr.a, i - 1), y = dg(pr.b, i - 1);
+    c[i] = pr.sign === '+' ? ((x + y + c[i - 1] >= 10) ? 1 : 0) : ((x < y + c[i - 1]) ? 1 : 0);
+  }
+  return c;
+}
+function genBonus(target) {
+  var cand = [], chosen = [], p;
+  for (p = 2; p <= target - 2; p++) cand.push(p);
+  for (var i = cand.length - 1; i > 0; i--) { var j = ri(0, i), t = cand[i]; cand[i] = cand[j]; cand[j] = t; }
+  var cnt = Math.max(1, Math.floor(target / 4));
+  cand.forEach(function (c) {
+    if (chosen.length < cnt && chosen.indexOf(c - 1) < 0 && chosen.indexOf(c + 1) < 0) chosen.push(c);
+  });
+  return chosen.sort(function (a, b) { return a - b; });
+}
+/*ENDGEN*/
+
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- Pioni, teme, Mate ---------- */
+  var AVATARS = [
+    { label: 'Rachetă', svg: '<path fill-rule="evenodd" d="M16 2c4.5 3.2 6.5 8.2 6.5 14.5L19.5 20h-7L9.5 16.5C9.5 10.2 11.5 5.2 16 2zM16 9a2.6 2.6 0 1 0 0 5.2A2.6 2.6 0 0 0 16 9z"/><path d="M9.5 15 4.5 21l5.4-1.2zM22.5 15l5 6-5.4-1.2z"/><path d="M13.2 22h5.6L16 30z"/>' },
+    { label: 'Balon', svg: '<path d="M16 2.5c5.2 0 8.5 4 8.5 8.4 0 5.2-5.4 9.2-8.5 11.1-3.1-1.9-8.5-5.9-8.5-11.1C7.5 6.5 10.8 2.5 16 2.5z"/><path d="M13 24.5h6v4.5h-6z"/><path d="M13 24.5l-2.4-3M19 24.5l2.4-3" stroke="currentColor" stroke-width="1.6" fill="none"/>' },
+    { label: 'Bărcuță', svg: '<path d="M15 3v16H6.5z"/><path d="M17.5 8.5 25.5 19h-8z"/><path d="M3.5 21.5h25L24 28.5H8z"/>' },
+    { label: 'Avion', svg: '<path d="M3 15 29 4 21 28 15.5 19.5z"/>' },
+    { label: 'Stea', svg: '<path d="M16 2.5l4.2 8.6 9.5 1.4-6.9 6.7 1.6 9.4L16 24.1l-8.4 4.5 1.6-9.4L2.3 12.5l9.5-1.4z"/>' }
+  ];
+  function av(idx) { return '<svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">' + AVATARS[idx % AVATARS.length].svg + '</svg>'; }
+
+  var THEMES = {
+    space: { label: 'Spațiu', sub: 'rachete spre planete', fin: '<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="21" rx="17" ry="5" fill="none" stroke="var(--p2)" stroke-width="3" transform="rotate(-18 20 21)"/><circle cx="20" cy="20" r="9.5" fill="var(--sun)" stroke="var(--ink)" stroke-width="2"/><path d="M12.5 21.5c5 2 11 .5 15-3" fill="none" stroke="var(--p2)" stroke-width="3" transform="rotate(-18 20 21)" opacity="0"/></svg>' },
+    forest: { label: 'Pădure', sub: 'toamna, prin frunze', fin: '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3l9 12h-5l8 11H8l8-11h-5z" fill="var(--p3)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><rect x="17.5" y="26" width="5" height="9" fill="var(--p2)" stroke="var(--ink)" stroke-width="2"/></svg>' },
+    winter: { label: 'Iarnă', sub: 'zăpadă și om de zăpadă', fin: '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="29" r="8.5" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/><circle cx="20" cy="15.5" r="6" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/><path d="M14 11h12M16 11V6h8v5" fill="var(--ink)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><circle cx="18" cy="15" r="1" fill="var(--ink)"/><circle cx="22" cy="15" r="1" fill="var(--ink)"/><path d="M20 16.5l4 1.2-4 .8z" fill="var(--p2)"/></svg>' }
+  };
+  var TRACKS = { space: ['#22305F', '#A9BBFF'], forest: ['#6A5136', '#B8D872'], winter: ['#5F86B5', '#FFFFFF'] };
+  var TEAMS = ['Echipa Soarelui', 'Echipa Lunii'];
+
+  var CUP = '<svg viewBox="0 0 120 120" aria-hidden="true"><path d="M30 30 H14 Q14 56 34 60 M90 30 H106 Q106 56 86 60" fill="none" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/><path d="M30 22 H90 V50 Q90 78 60 82 Q30 78 30 50 Z" fill="var(--sun)" stroke="var(--ink)" stroke-width="4"/><rect x="54" y="82" width="12" height="16" fill="var(--sun)" stroke="var(--ink)" stroke-width="4"/><rect x="36" y="98" width="48" height="12" rx="4" fill="var(--sun)" stroke="var(--ink)" stroke-width="4"/><path d="M60 30 l5.5 11 12 1.8 -8.7 8.5 2 12 -10.8 -5.7 -10.8 5.7 2 -12 -8.7 -8.5 12 -1.8z" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/></svg>';
+  var MEDAL = '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="var(--bc)" stroke="var(--ink)" stroke-width="2"/><path d="M16 7l2.6 5.4 5.9.9-4.3 4.2 1 5.9L16 20.5l-5.2 2.9 1-5.9-4.3-4.2 5.9-.9z" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.2" stroke-linejoin="round"/></svg>';
+
+  /* Mate, albinuța: expresii diferite după ce se întâmplă în joc */
+  function mateSVG(expr) {
+    var eye = '<circle cx="71" cy="41" r="3" fill="var(--ink)"/>', mouth = '<path d="M65 50 Q70 55 75 49" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/>', extra = '';
+    if (expr === 'happy' || expr === 'cheer') {
+      eye = '<path d="M67.5 42 Q71 37 74.5 42" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/>';
+      mouth = '<path d="M63.5 49 Q70 60 77 49 Z" fill="var(--ink)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>';
+      extra = '<circle cx="62" cy="47" r="3" fill="var(--p2)" opacity=".55"/>';
+    }
+    if (expr === 'cheer') extra += '<path d="M12 12l2 4 4 2-4 2-2 4-2-4-4-2 4-2z M80 8l1.6 3.2 3.2 1.6-3.2 1.6L80 17.6l-1.6-3.2-3.2-1.6 3.2-1.6z" fill="var(--sun)" stroke="var(--ink)" stroke-width="1.5" stroke-linejoin="round"/>';
+    if (expr === 'try') {
+      eye = '<circle cx="71" cy="41" r="3" fill="var(--ink)"/><path d="M67 35.5l8 2" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>';
+      mouth = '<path d="M65 51h9" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/>';
+    }
+    return '<svg viewBox="0 0 90 80" aria-hidden="true"><g transform="rotate(-20 30 22)"><ellipse class="wing" cx="30" cy="22" rx="11" ry="16" fill="var(--surface-2)" stroke="var(--line)" stroke-width="3"/></g>' +
+      '<ellipse cx="38" cy="50" rx="26" ry="20" fill="var(--sun)"/><path d="M30 32 Q26 50 31 68 M46 31 Q43 50 47 68" stroke="var(--ink)" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+      '<circle cx="66" cy="44" r="14" fill="var(--sun)"/>' + eye + mouth + extra +
+      '<path d="M62 31 Q58 20 52 17 M70 31 Q75 21 82 20" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/></svg>';
+  }
+  var beeTimer = null;
+  function setBee(expr, ms) {
+    var el = $('mate');
+    el.innerHTML = mateSVG(expr);
+    el.className = 'mate' + (expr === 'idle' ? '' : ' ' + expr);
+    clearTimeout(beeTimer);
+    if (expr !== 'idle') beeTimer = setTimeout(function () { setBee('idle'); }, ms || 1800);
+  }
+
+  var cfg = { players: 2, names: ['Elevul 1', 'Elevul 2', 'Elevul 3', 'Elevul 4'], av: [0, 1, 2, 3], op: 'mix', level: 'mix', target: 8, theme: 'space', mode: 'solo', sound: 'on' };
+  var g = null;
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+  function nm(i) { var s = (cfg.names[i] || '').trim(); return s || ('Elevul ' + (i + 1)); }
+  function later(fn, ms) { var id = g.id; setTimeout(function () { if (g && g.id === id) fn(); }, ms); }
+
+  /* ---------- Sunete (sintetizate, fără fișiere) ---------- */
+  var AC = null;
+  function ac() {
+    if (cfg.sound !== 'on') return null;
+    try {
+      if (!AC) { var C = window.AudioContext || window.webkitAudioContext; if (!C) return null; AC = new C(); }
+      if (AC.state === 'suspended') AC.resume();
+      return AC;
+    } catch (e) { return null; }
+  }
+  function tone(f, t, d, type, v) {
+    var a = ac(); if (!a) return;
+    try {
+      var o = a.createOscillator(), gn = a.createGain(), s = a.currentTime + (t || 0), dur = d || 0.2;
+      o.type = type || 'sine'; o.frequency.value = f;
+      gn.gain.setValueAtTime(0.0001, s);
+      gn.gain.exponentialRampToValueAtTime(v || 0.12, s + 0.02);
+      gn.gain.exponentialRampToValueAtTime(0.0001, s + dur);
+      o.connect(gn); gn.connect(a.destination);
+      o.start(s); o.stop(s + dur + 0.05);
+    } catch (e) {}
+  }
+  var SND = {
+    ok: function () { tone(660, 0, 0.14, 'triangle'); tone(880, 0.11, 0.22, 'triangle'); },
+    wrong: function () { tone(330, 0, 0.22, 'sine', 0.08); tone(277, 0.16, 0.3, 'sine', 0.07); },
+    bonus: function () { [523, 659, 784, 1047].forEach(function (f, k) { tone(f, k * 0.08, 0.18, 'square', 0.05); }); },
+    half: function () { [523, 659, 784].forEach(function (f, k) { tone(f, k * 0.1, 0.2, 'triangle', 0.1); }); },
+    fin: function () { [392, 523, 659].forEach(function (f, k) { tone(f, k * 0.12, 0.25, 'triangle', 0.1); }); },
+    cup: function () { [523, 659, 784, 1047, 784, 1047, 1319].forEach(function (f, k) { tone(f, k * 0.13, 0.3, 'triangle', 0.12); }); }
+  };
+  function updSnd() { $('btn-snd').textContent = cfg.sound === 'on' ? 'Sunet: pornit' : 'Sunet: oprit'; }
+
+  /* ---------- Setări ---------- */
+  function seg(id, items, key, onChange) {
+    var el = $(id);
+    el.innerHTML = '';
+    items.forEach(function (it) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.innerHTML = esc(it.label) + (it.sub ? '<small>' + esc(it.sub) + '</small>' : '');
+      b.setAttribute('aria-pressed', String(cfg[key] === it.value));
+      if (it.disabled) b.disabled = true;
+      b.addEventListener('click', function () {
+        cfg[key] = it.value;
+        Array.prototype.forEach.call(el.children, function (c, idx) { c.setAttribute('aria-pressed', String(items[idx].value === it.value)); });
+        if (onChange) onChange();
+      });
+      el.appendChild(b);
+    });
+  }
+  function renderNames() {
+    var box = $('names');
+    box.innerHTML = '';
+    for (var i = 0; i < cfg.players; i++) {
+      (function (i) {
+        var d = document.createElement('div');
+        d.className = 'name-in';
+        var cls = (cfg.mode === 'team' && cfg.players === 4) ? (i < 2 ? 1 : 2) : i + 1;
+        d.innerHTML = '<button type="button" class="av-btn c' + cls + '" aria-label="Schimbă pionul: ' + AVATARS[cfg.av[i]].label + '">' + av(cfg.av[i]) + '</button><input type="text" id="nm' + i + '" maxlength="14" aria-label="Numele elevului ' + (i + 1) + '" value="' + esc(cfg.names[i]) + '">';
+        box.appendChild(d);
+        d.querySelector('input').addEventListener('input', function (e) { cfg.names[i] = e.target.value; });
+        d.querySelector('button').addEventListener('click', function (e) {
+          cfg.av[i] = (cfg.av[i] + 1) % AVATARS.length;
+          var b = e.currentTarget;
+          b.innerHTML = av(cfg.av[i]);
+          b.setAttribute('aria-label', 'Schimbă pionul: ' + AVATARS[cfg.av[i]].label);
+        });
+      })(i);
+    }
+  }
+  function renderMode() {
+    if (cfg.players !== 4 && cfg.mode === 'team') cfg.mode = 'solo';
+    seg('seg-mode', [
+      { value: 'solo', label: 'Fiecare pentru el', sub: 'cine ajunge primul' },
+      { value: 'team', label: 'Pe echipe', sub: 'doar cu 4 elevi: 2 la 2', disabled: cfg.players !== 4 }
+    ], 'mode', renderNames);
+  }
+  function initSetup() {
+    seg('seg-players', [1, 2, 3, 4].map(function (n) { return { value: n, label: n === 1 ? '1 elev' : n + ' elevi' }; }), 'players', function () { renderMode(); renderNames(); });
+    renderMode();
+    seg('seg-theme', Object.keys(THEMES).map(function (k) { return { value: k, label: THEMES[k].label, sub: THEMES[k].sub }; }), 'theme');
+    seg('seg-op', [
+      { value: 'add', label: 'Adunări', sub: 'a + b' },
+      { value: 'sub', label: 'Scăderi', sub: 'a − b' },
+      { value: 'mix', label: 'Amestecat', sub: 'adunări și scăderi' }
+    ], 'op');
+    seg('seg-level', [
+      { value: 'fara', label: 'Fără trecere', sub: 'peste ordin' },
+      { value: 'cu', label: 'Cu trecere', sub: 'peste ordin' },
+      { value: 'mix', label: 'Amestecat', sub: 'și fără, și cu trecere' }
+    ], 'level');
+    seg('seg-target', [
+      { value: 5, label: '5 calcule', sub: 'cursă scurtă' },
+      { value: 8, label: '8 calcule', sub: 'cursă medie' },
+      { value: 10, label: '10 calcule', sub: 'cursă lungă' }
+    ], 'target');
+    seg('seg-sound', [
+      { value: 'on', label: 'Cu sunet', sub: 'clinchete scurte' },
+      { value: 'off', label: 'Fără sunet' }
+    ], 'sound', updSnd);
+    renderNames();
+    $('mate-setup').innerHTML = mateSVG('happy');
+    updSnd();
+  }
+  function show(id) {
+    ['s-setup', 's-game', 's-end'].forEach(function (s) { $(s).hidden = (s !== id); });
+    $('cup').hidden = true;
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------- Cursa ---------- */
+  function say(msg, tone) {
+    var b = $('bubble');
+    b.innerHTML = '<span class="mname">Mate</span><span class="btext"></span>';
+    b.querySelector('.btext').textContent = msg;
+    b.className = 'bubble' + (tone ? ' ' + tone : '');
+  }
+  function buildLanes() {
+    var h = '';
+    g.ents.forEach(function (e, ei) {
+      var ticks = '';
+      for (var t = 0; t <= e.target; t++) {
+        ticks += '<span class="tick' + (e.bonus.indexOf(t) >= 0 ? ' bonus' : '') + '" style="left:calc((100% - var(--pw)) * ' + (t / e.target) + ' + var(--pw) / 2)"></span>';
+      }
+      h += '<div class="lane">' +
+        '<div class="who"><span class="swatch c' + (ei + 1) + '">' + av(e.av) + '</span><span class="nm">' + esc(e.name) + '</span><span class="pts"></span></div>' +
+        '<div class="track" style="--p:0">' + ticks + '<span class="fillbar c' + (ei + 1) + '"></span><span class="fin">' + THEMES[cfg.theme].fin + '</span>' +
+        '<span class="pawn c' + (ei + 1) + '">' + av(e.av) + '</span></div></div>';
+    });
+    var el = $('lanes');
+    el.style.setProperty('--lc', g.ents.length === 1 ? 1 : 2);
+    el.innerHTML = h;
+  }
+  function updateLanes(hop) {
+    var lanes = $('lanes').children;
+    g.ents.forEach(function (e, ei) {
+      var lane = lanes[ei];
+      lane.querySelector('.pts').textContent = e.steps + ' / ' + e.target;
+      lane.querySelector('.track').style.setProperty('--p', Math.min(1, e.steps / e.target));
+      var ticks = lane.querySelectorAll('.tick');
+      for (var t = 0; t < ticks.length; t++) ticks[t].classList.toggle('used', !!e.used[t]);
+      if (ei === hop) {
+        var pw = lane.querySelector('.pawn');
+        pw.classList.remove('hop'); void pw.offsetWidth; pw.classList.add('hop');
+      }
+    });
+  }
+  function burst(ei) {
+    var pw = $('lanes').children[ei].querySelector('.pawn');
+    var colors = ['var(--p1)', 'var(--p2)', 'var(--p3)', 'var(--p4)', 'var(--sun)'];
+    for (var k = 0; k < 16; k++) {
+      var s = document.createElement('span');
+      var ang = (k / 16) * Math.PI * 2, r = 40 + Math.random() * 40;
+      s.className = 'spark';
+      s.style.background = colors[k % colors.length];
+      s.style.setProperty('--dx', Math.round(Math.cos(ang) * r) + 'px');
+      s.style.setProperty('--dy', Math.round(Math.sin(ang) * r) + 'px');
+      pw.appendChild(s);
+      (function (n) { setTimeout(function () { if (n.parentNode) n.parentNode.removeChild(n); }, 1200); })(s);
+    }
+  }
+
+  /* ---------- Joc ---------- */
+  function startGame() {
+    var n = cfg.players, team = cfg.mode === 'team' && n === 4;
+    g = { id: Date.now() + Math.random(), n: n, team: team, pl: [], ents: [], order: [] };
+    for (var i = 0; i < n; i++) g.pl.push({ ent: team ? (i < 2 ? 0 : 1) : i, errors: 0, firstOk: 0, recovered: 0, carryOk: 0, last: null });
+    var tgt = team ? cfg.target * 2 : cfg.target;
+    if (team) {
+      [0, 1].forEach(function (k) { g.ents.push({ members: [k * 2, k * 2 + 1], steps: 0, target: tgt, bonus: genBonus(tgt), used: {}, name: TEAMS[k], av: k === 0 ? 0 : 2, place: 0, half: false }); });
+    } else {
+      for (var j = 0; j < n; j++) g.ents.push({ members: [j], steps: 0, target: tgt, bonus: genBonus(tgt), used: {}, name: nm(j), av: cfg.av[j], place: 0, half: false });
+    }
+    var th = TRACKS[cfg.theme];
+    var gs = $('s-game');
+    gs.className = 'screen th-' + cfg.theme;
+    gs.style.setProperty('--tr-bg', th[0]);
+    gs.style.setProperty('--tr-tick', th[1]);
+    show('s-game');
+    $('goal').textContent = team ? 'Echipa care ajunge prima' : 'Primul la ' + cfg.target + ' calcule';
+    say(team ? 'Salut! Ne ajutăm între noi: pașii fiecărei echipe se adună. Spor la calcule!' : 'Salut! Fiecare are calculele lui. Stelele de pe traseu dau un pas în plus. Cine ajunge primul?', '');
+    setBee('happy', 2200);
+    updSnd();
+    buildLanes();
+    buildPanels();
+    updateLanes(-1);
+    for (var q = 0; q < n; q++) newProblem(q);
+  }
+  function padDigits(n, cols) {
+    var s = String(n), out = [];
+    for (var c = 0; c < cols; c++) { var k = c - (cols - s.length); out.push(k >= 0 ? s.charAt(k) : ''); }
+    return out;
+  }
+  function labels(cols) { return ['M', 'S', 'Z', 'U'].slice(4 - cols); }
+  function ansDigit(ans, idx) { var p = Math.pow(10, idx); return (idx === 0 || ans >= p) ? String(Math.floor(ans / p) % 10) : ''; }
+
+  function buildPanels() {
+    var h = '';
+    for (var i = 0; i < g.n; i++) {
+      var ei = g.pl[i].ent;
+      var keys = '';
+      ['1', '2', '3', '4', '5', '6', '7', '8', '9'].forEach(function (k) { keys += '<button type="button" data-p="' + i + '" data-k="' + k + '">' + k + '</button>'; });
+      keys += '<button type="button" class="zero" data-p="' + i + '" data-k="0">0</button><button type="button" class="del" data-p="' + i + '" data-k="del" aria-label="Șterge">⌫</button><button type="button" class="ok" data-p="' + i + '" data-k="ok">Verifică</button>';
+      h += '<div class="panel" style="--pc:var(--p' + (ei + 1) + ')"><div class="phead"><span class="swatch c' + (ei + 1) + '">' + av(cfg.av[i]) + '</span><span class="nm">' + esc(nm(i)) + '</span><span class="pst"></span></div>' +
+        '<div class="pbody"><div class="pleft"></div><div class="kp">' + keys + '</div></div></div>';
+    }
+    var el = $('panels');
+    el.style.setProperty('--pcols', g.n === 1 ? 1 : g.n === 2 ? 2 : g.n);
+    el.innerHTML = h;
+  }
+  function newProblem(i) {
+    var pl = g.pl[i];
+    pl.problem = genProblem(cfg.level, cfg.op, pl.last);
+    pl.last = pl.problem;
+    var pr = pl.problem;
+    pl.cols = Math.max(pr.a, pr.b, pr.ans) >= 1000 ? 4 : 3;
+    pl.d = ['', '', '', ''];
+    pl.cur = 0; pl.att = 0; pl.st = 'work'; pl.msg = '';
+    pl.c = ['', '', '', '']; pl.tgt = -1;
+    renderLeft(i);
+    updatePanel(i);
+  }
+  function renderLeft(i) {
+    var pl = g.pl[i], pr = pl.problem, cols = pl.cols;
+    var A = padDigits(pr.a, cols), B = padDigits(pr.b, cols);
+    var h = pr.carry ? '<div class="hint">Notează sus ce dai mai departe</div>' : '';
+    h += '<div class="pgrid" style="--cols:' + cols + '">';
+    labels(cols).forEach(function (l) { h += '<span class="lb">' + l + '</span>'; });
+    h += '<span></span>';
+    if (pr.carry) {
+      for (var q = 0; q < cols; q++) {
+        var ci = cols - 1 - q;
+        h += ci >= 1 ? '<button type="button" class="cb" data-p="' + i + '" data-carry="' + ci + '" aria-label="Ce dau mai departe, coloana ' + labels(cols)[q] + '"></button>' : '<span></span>';
+      }
+      h += '<span class="sg"></span>';
+    }
+    A.forEach(function (d, k) { h += '<span class="c' + (k === 0 ? ' f' : '') + '">' + (d || '&nbsp;') + '</span>'; });
+    h += '<span class="sg">' + pr.sign + '</span>';
+    B.forEach(function (d, k) { h += '<span class="c' + (k === 0 ? ' f' : '') + '">' + (d || '&nbsp;') + '</span>'; });
+    h += '<span class="sg"></span><hr>';
+    for (var k = 0; k < cols; k++) {
+      var idx = cols - 1 - k;
+      h += '<button type="button" class="ab" data-p="' + i + '" data-box="' + idx + '" aria-label="Căsuța ' + labels(cols)[k] + '"></button>';
+    }
+    h += '<span class="sg"></span></div>';
+    $('panels').children[i].querySelector('.pleft').innerHTML = h;
+  }
+  function updatePanel(i) {
+    var pl = g.pl[i], panel = $('panels').children[i];
+    var good = pl.st === 'right' || pl.st === 'finished', oops = pl.st === 'reveal';
+    panel.className = 'panel' + (good ? ' good' : oops ? ' oops' : '');
+    var text = pl.msg;
+    if (!text) {
+      text = pl.st === 'work' ? 'Calculează…' : pl.st === 'retry' ? 'Mai încearcă!' : pl.st === 'right' ? 'Corect!' :
+        pl.st === 'reveal' ? 'Era ' + pl.problem.ans + '. Apasă Mai departe.' : 'Locul ' + g.ents[pl.ent].place + '!';
+    }
+    var st = panel.querySelector('.pst');
+    st.textContent = text;
+    st.className = 'pst' + (pl.st === 'retry' || pl.st === 'reveal' ? ' retry' : '');
+    var editable = pl.st === 'work' || pl.st === 'retry';
+    Array.prototype.forEach.call(panel.querySelectorAll('.ab'), function (b) {
+      var idx = parseInt(b.getAttribute('data-box'), 10);
+      var digit = pl.st === 'reveal' ? ansDigit(pl.problem.ans, idx) : pl.d[idx];
+      b.textContent = digit;
+      b.disabled = !editable;
+      b.className = 'ab' + (editable && pl.tgt < 0 && idx === pl.cur ? ' cur' : '') + (good ? ' good' : oops ? ' oops' : '');
+    });
+    var cr = pl.st === 'reveal' ? carriesOf(pl.problem, pl.cols) : null;
+    Array.prototype.forEach.call(panel.querySelectorAll('.cb'), function (b) {
+      var ci = parseInt(b.getAttribute('data-carry'), 10);
+      b.textContent = cr ? (cr[ci] ? String(cr[ci]) : '') : pl.c[ci];
+      b.disabled = !editable;
+      b.className = 'cb' + (editable && pl.tgt === ci ? ' cur' : '') + (oops ? ' oops' : '');
+    });
+    panel.querySelector('.kp .ok').textContent = pl.st === 'reveal' ? 'Mai departe' : 'Verifică';
+    Array.prototype.forEach.call(panel.querySelectorAll('.kp button'), function (b) {
+      b.disabled = !(editable || (pl.st === 'reveal' && b.getAttribute('data-k') === 'ok'));
+    });
+  }
+
+  function press(i, k) {
+    var pl = g.pl[i];
+    if (pl.st === 'reveal') { if (k === 'ok') newProblem(i); return; }
+    if (pl.st !== 'work' && pl.st !== 'retry') return;
+    if (k === 'ok') { pl.tgt = -1; submitP(i); return; }
+    pl.msg = '';
+    if (pl.tgt >= 0) {
+      pl.c[pl.tgt] = (k === 'del') ? '' : k;
+      pl.tgt = -1;
+      updatePanel(i);
+      return;
+    }
+    if (k === 'del') {
+      if (pl.d[pl.cur] === '' && pl.cur > 0) pl.cur--;
+      pl.d[pl.cur] = '';
+    } else {
+      pl.d[pl.cur] = k;
+      if (pl.cur < pl.cols - 1) pl.cur++;
+    }
+    updatePanel(i);
+  }
+  function submitP(i) {
+    var pl = g.pl[i], hi = -1, idx;
+    for (idx = 0; idx < pl.cols; idx++) if (pl.d[idx] !== '') hi = idx;
+    if (hi < 0) { pl.msg = 'Scrie răspunsul.'; updatePanel(i); return; }
+    for (idx = 0; idx < hi; idx++) if (pl.d[idx] === '') { pl.msg = 'Completează toate căsuțele.'; updatePanel(i); return; }
+    var val = 0;
+    for (idx = hi; idx >= 0; idx--) val = val * 10 + parseInt(pl.d[idx], 10);
+    var who = nm(i), ei = pl.ent, e = g.ents[ei];
+    if (val === pl.problem.ans) {
+      if (pl.att === 0) pl.firstOk++; else pl.recovered++;
+      if (pl.problem.carry) pl.carryOk++;
+      pl.st = 'right';
+      e.steps++;
+      var bonus = false;
+      if (e.bonus.indexOf(e.steps) >= 0 && !e.used[e.steps]) {
+        e.used[e.steps] = true;
+        e.steps = Math.min(e.target, e.steps + 1);
+        bonus = true;
+      }
+      updatePanel(i);
+      updateLanes(ei);
+      if (e.steps >= e.target) { finishEnt(ei); return; }
+      var progress = ' ' + e.steps + ' din ' + e.target;
+      if (!e.half && e.steps >= Math.ceil(e.target / 2)) {
+        e.half = true;
+        burst(ei); SND.half(); setBee('cheer', 2400);
+        say((g.team ? e.name : who) + ' a ajuns la jumătatea drumului! Bravo!', 'good');
+      } else if (bonus) {
+        burst(ei); SND.bonus(); setBee('cheer', 2200);
+        say('Stea norocoasă, ' + who + '! Ai primit un pas în plus!' + progress, 'good');
+      } else {
+        SND.ok(); setBee('happy', 1500);
+        say(pick(['Bravo, ' + who + '!', 'Foarte bine, ' + who + '!', 'Exact, ' + who + '!']) + (g.team ? ' Echipa:' : '') + progress, 'good');
+      }
+      later(function () { if (g.pl[i].st === 'right') newProblem(i); }, 1100);
+    } else if (pl.att === 0) {
+      pl.att = 1; pl.errors++; pl.d = ['', '', '', '']; pl.cur = 0; pl.st = 'retry'; pl.msg = '';
+      SND.wrong(); setBee('try', 1800);
+      say('Aproape, ' + who + '! Verifică încă o dată, tu poți!', '');
+      updatePanel(i);
+    } else {
+      pl.errors++;
+      pl.st = 'reveal';
+      SND.wrong(); setBee('try', 1800);
+      say('Nu-i nimic, ' + who + '! Ne uităm împreună cum se calculează.', '');
+      updatePanel(i);
+    }
+  }
+  function finishEnt(ei) {
+    var e = g.ents[ei];
+    g.order.push(ei);
+    e.place = g.order.length;
+    e.members.forEach(function (j) {
+      var pl = g.pl[j];
+      pl.st = 'finished';
+      pl.msg = (g.team ? 'Echipa a terminat! Locul ' : 'Finiș! Locul ') + e.place;
+      updatePanel(j);
+    });
+    if (g.n === 1) { SND.cup(); later(endGame, 900); return; }
+    if (g.order.length === g.ents.length) { SND.fin(); later(endGame, 1500); return; }
+    say(e.name + ' a ajuns la finiș, locul ' + e.place + '!', 'good');
+    if (e.place === 1) { later(function () { showCup(ei); }, 700); }
+    else { burst(ei); SND.fin(); setBee('cheer', 2200); }
+  }
+
+  /* ---------- Cupa ---------- */
+  function showCup(ei) {
+    var e = g.ents[ei];
+    $('cup-svg').innerHTML = CUP;
+    $('cup-title').textContent = 'Felicitări, ' + e.name + '!';
+    $('cup-sub').textContent = g.team ? 'Ați ajuns primii la finiș. Ați câștigat cupa! Bravo, ' + e.members.map(nm).join(' și ') + '!' : 'Ai ajuns primul la finiș. Ai câștigat cupa!';
+    var wrap = $('cup');
+    Array.prototype.slice.call(wrap.querySelectorAll('.confetti')).forEach(function (n) { n.remove(); });
+    var colors = ['var(--p1)', 'var(--p2)', 'var(--p3)', 'var(--p4)', 'var(--sun)'];
+    for (var k = 0; k < 36; k++) {
+      var s = document.createElement('span');
+      s.className = 'confetti';
+      s.style.left = (Math.random() * 100) + '%';
+      s.style.background = colors[k % colors.length];
+      s.style.animationDelay = (Math.random() * 1.2) + 's';
+      s.style.animationDuration = (2.6 + Math.random() * 1.6) + 's';
+      wrap.appendChild(s);
+    }
+    wrap.hidden = false;
+    SND.cup();
+    setBee('cheer', 4000);
+  }
+
+  /* ---------- Insigne ---------- */
+  function computeBadges() {
+    var res = [], i;
+    var okc = function (p) { return p.firstOk + p.recovered; };
+    var minErr = null, maxCarry = 0;
+    g.pl.forEach(function (p) {
+      if (okc(p) >= 2 && (minErr === null || p.errors < minErr)) minErr = p.errors;
+      if (p.carryOk > maxCarry) maxCarry = p.carryOk;
+    });
+    var winnerEnt = g.order.length ? g.order[0] : -1;
+    for (i = 0; i < g.n; i++) {
+      var p = g.pl[i], list = [];
+      if (winnerEnt >= 0 && p.ent === winnerEnt && g.n > 1) list.push(g.team ? ['Campionii cursei', 'var(--sun)'] : ['Cel mai rapid', 'var(--sun)']);
+      if (okc(p) >= 2 && p.errors === minErr) list.push(['Cel mai atent', 'var(--p1)']);
+      if (p.recovered >= 1) list.push(['Nu renunță', 'var(--p3)']);
+      if (cfg.level !== 'fara' && p.carryOk >= 2 && p.carryOk === maxCarry) list.push(['Maestrul trecerii', 'var(--p4)']);
+      if (g.team) list.push(['Spirit de echipă', 'var(--p2)']);
+      if (!list.length) list.push(['Pas cu pas', 'var(--accent)']);
+      res.push(list);
+    }
+    return res;
+  }
+
+  /* ---------- Final ---------- */
+  function endGame() {
+    if (!g) return;
+    var done = g.order.slice(), rest = [];
+    for (var i = 0; i < g.ents.length; i++) if (done.indexOf(i) < 0) rest.push(i);
+    rest.sort(function (a, b) { return g.ents[b].steps - g.ents[a].steps; });
+    function row(ei, place, text, first) {
+      var e = g.ents[ei];
+      var sub = g.team ? '<small>' + e.members.map(nm).map(esc).join(' și ') + '</small>' : '';
+      return '<div class="rank-row' + (first ? ' first' : '') + '"><span class="place">' + place + '</span><span class="nm"><span class="swatch c' + (ei + 1) + '">' + av(e.av) + '</span><span>' + esc(e.name) + sub + '</span></span><span class="sc">' + text + '</span></div>';
+    }
+    var rows = '', prev = null, rk = 0;
+    done.forEach(function (ei, pos) { rows += row(ei, pos + 1, 'Finiș', pos === 0 && g.ents.length > 1); });
+    rest.forEach(function (ei, pos) {
+      var e = g.ents[ei];
+      if (e.steps !== prev) { rk = done.length + pos + 1; prev = e.steps; }
+      rows += row(ei, rk, e.steps + ' din ' + e.target + ' calcule', false);
+    });
+    $('rank').innerHTML = rows;
+
+    var bl = computeBadges(), bh = '';
+    for (var p = 0; p < g.n; p++) {
+      bh += '<div class="brow"><span class="nm"><span class="swatch c' + (g.pl[p].ent + 1) + '">' + av(cfg.av[p]) + '</span>' + esc(nm(p)) + '</span>' +
+        bl[p].map(function (b) { return '<span class="bchip" style="--bc:' + b[1] + '">' + MEDAL + esc(b[0]) + '</span>'; }).join('') + '</div>';
+    }
+    $('badges').innerHTML = bh;
+
+    var cup = $('end-cup'), stars = $('end-stars');
+    stars.hidden = true; cup.hidden = true;
+    if (done.length) {
+      var w = g.ents[done[0]];
+      cup.innerHTML = CUP; cup.hidden = false;
+      $('end-title').textContent = g.n === 1 ? 'Bravo, ' + w.name + '!' : 'Felicitări, ' + w.name + '!';
+      $('end-note').textContent = g.n === 1 ? 'Ai ajuns la finiș.' : (g.team ? 'Au ajuns primii la finiș. ' : 'A ajuns primul la finiș. ') + 'Toți ați exersat și ați avansat pe traseu.';
+      if (g.n === 1) {
+        var er = g.pl[0].errors, s = er <= 1 ? 3 : er <= 3 ? 2 : 1;
+        stars.hidden = false;
+        stars.textContent = '★★★'.slice(0, s) + '☆☆☆'.slice(0, 3 - s);
+      }
+    } else {
+      $('end-title').textContent = 'Cursa s-a oprit aici';
+      $('end-note').textContent = 'Bravo tuturor pentru efort! La următoarea cursă ajungem mai departe.';
+    }
+    show('s-end');
+  }
+
+  /* ---------- Evenimente ---------- */
+  $('btn-start').addEventListener('click', startGame);
+  $('btn-quit').addEventListener('click', function () { show('s-setup'); });
+  $('btn-rank').addEventListener('click', endGame);
+  $('btn-again').addEventListener('click', startGame);
+  $('btn-settings').addEventListener('click', function () { show('s-setup'); });
+  $('btn-snd').addEventListener('click', function () { cfg.sound = cfg.sound === 'on' ? 'off' : 'on'; updSnd(); initSoundSeg(); });
+  function initSoundSeg() {
+    seg('seg-sound', [
+      { value: 'on', label: 'Cu sunet', sub: 'clinchete scurte' },
+      { value: 'off', label: 'Fără sunet' }
+    ], 'sound', updSnd);
+  }
+  $('cup-go').addEventListener('click', function () { $('cup').hidden = true; });
+  $('cup-end').addEventListener('click', endGame);
+  $('panels').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b || b.disabled || !g) return;
+    var i = parseInt(b.getAttribute('data-p'), 10);
+    if (b.hasAttribute('data-box') || b.hasAttribute('data-carry')) {
+      var pl = g.pl[i];
+      if (pl.st !== 'work' && pl.st !== 'retry') return;
+      if (b.hasAttribute('data-carry')) { pl.tgt = parseInt(b.getAttribute('data-carry'), 10); }
+      else { pl.tgt = -1; pl.cur = parseInt(b.getAttribute('data-box'), 10); }
+      updatePanel(i);
+    } else {
+      press(i, b.getAttribute('data-k'));
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!g || $('s-game').hidden || g.n !== 1 || !$('cup').hidden) return;
+    if (e.target && e.target.tagName === 'INPUT') return;
+    if (e.key >= '0' && e.key <= '9') press(0, e.key);
+    else if (e.key === 'Backspace') press(0, 'del');
+    else if (e.key === 'Enter') press(0, 'ok');
+  });
+
+  initSetup();
+  setBee('idle');
+})();
+</script>
+
+</body></html>

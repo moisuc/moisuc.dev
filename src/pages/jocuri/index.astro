@@ -1,0 +1,27 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { games } from "../../games/games.js";
+
+export const prerender = true;
+---
+
+<Layout title="Jocuri — moisuc.dev" description="Jocuri educative și mini-jocuri." lang="ro">
+  <main class="mx-auto max-w-4xl px-6 py-16">
+    <a href="/" class="font-display text-xl font-bold transition-colors hover:text-accent">
+      moisuc<span class="text-accent">.dev</span>
+    </a>
+    <h1 class="mt-12 font-display text-4xl font-bold">Jocuri</h1>
+    <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+      {games.map((g) => (
+        <li>
+          <a
+            href={`/jocuri/${g.slug}`}
+            class="block rounded-xl border border-border bg-surface p-6 transition-colors hover:border-accent/50 hover:bg-surface-light"
+          >
+            <span class="font-display text-lg font-semibold">{g.title}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </main>
+</Layout>
