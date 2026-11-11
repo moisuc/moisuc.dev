@@ -116,6 +116,9 @@ h1, h2, h3 { font-family: var(--f-display); margin: 0; text-wrap: balance; }
 .lane { position: relative; display: grid; grid-template-columns: minmax(130px, 30%) 1fr; align-items: center; gap: 10px; background: var(--surface); border: 2px solid var(--line); border-radius: 16px; padding: 4px 12px 4px 8px; }
 .who { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .who .nm { font-weight: 800; font-size: clamp(.95rem, 1.5vw, 1.3rem); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.who .lcup { flex: none; width: 34px; height: 34px; margin-left: auto; }
+.who .lcup svg { width: 100%; height: 100%; }
+.who .lcup + .pts { margin-left: 0; }
 .who .pts { font-family: var(--f-display); font-weight: 800; font-size: 1.2rem; margin-left: auto; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .track { --pw: 40px; position: relative; height: 46px; }
 .track::before { content: ""; position: absolute; left: calc(var(--pw) / 2); right: calc(var(--pw) / 2); top: 50%; height: 16px; margin-top: -8px; background: var(--tr-bg); border-radius: 9px; }
@@ -304,18 +307,6 @@ h1, h2, h3 { font-family: var(--f-display); margin: 0; text-wrap: balance; }
     </div>
   </section>
 
-  <!-- CUPA PENTRU PRIMUL LA FINIȘ -->
-  <div class="cupov" id="cup" hidden>
-    <div class="cupbox" role="dialog" aria-labelledby="cup-title">
-      <div class="cupsvg" id="cup-svg"></div>
-      <h2 id="cup-title"></h2>
-      <p id="cup-sub"></p>
-      <div class="actions">
-        <button class="big-btn" id="cup-go" type="button">Continuăm</button>
-        <button class="big-btn alt" id="cup-end" type="button">Vezi clasamentul</button>
-      </div>
-    </div>
-  </div>
 </div>
 
 <script>
@@ -822,31 +813,14 @@ function genBonus(target) {
     if (g.n === 1) { SND.cup(); later(endGame, 900); return; }
     if (g.order.length === g.ents.length) { SND.fin(); later(endGame, 1500); return; }
     say(e.name + ' a ajuns la finiș, locul ' + e.place + '!', 'good');
-    if (e.place === 1) { later(function () { showCup(ei); }, 700); }
-    else { burst(ei); SND.fin(); setBee('cheer', 2200); }
-  }
-
-  /* ---------- Cupa ---------- */
-  function showCup(ei) {
-    var e = g.ents[ei];
-    $('cup-svg').innerHTML = CUP;
-    $('cup-title').textContent = 'Felicitări, ' + e.name + '!';
-    $('cup-sub').textContent = g.team ? 'Ați ajuns primii la finiș. Ați câștigat cupa! Bravo, ' + e.members.map(nm).join(' și ') + '!' : 'Ai ajuns primul la finiș. Ai câștigat cupa!';
-    var wrap = $('cup');
-    Array.prototype.slice.call(wrap.querySelectorAll('.confetti')).forEach(function (n) { n.remove(); });
-    var colors = ['var(--p1)', 'var(--p2)', 'var(--p3)', 'var(--p4)', 'var(--sun)'];
-    for (var k = 0; k < 36; k++) {
-      var s = document.createElement('span');
-      s.className = 'confetti';
-      s.style.left = (Math.random() * 100) + '%';
-      s.style.background = colors[k % colors.length];
-      s.style.animationDelay = (Math.random() * 1.2) + 's';
-      s.style.animationDuration = (2.6 + Math.random() * 1.6) + 's';
-      wrap.appendChild(s);
-    }
-    wrap.hidden = false;
-    SND.cup();
-    setBee('cheer', 4000);
+    var who = $('lanes').children[ei].querySelector('.who');
+    if (e.place === 1) {
+      var c = document.createElement('span');
+      c.className = 'lcup'; c.innerHTML = CUP;
+      who.insertBefore(c, who.querySelector('.pts'));
+      SND.cup();
+    } else SND.fin();
+    burst(ei); setBee('cheer', 2200);
   }
 
   /* ---------- Insigne ---------- */
@@ -931,8 +905,6 @@ function genBonus(target) {
       { value: 'off', label: 'Fără sunet' }
     ], 'sound', updSnd);
   }
-  $('cup-go').addEventListener('click', function () { $('cup').hidden = true; });
-  $('cup-end').addEventListener('click', endGame);
   $('panels').addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b || b.disabled || !g) return;
     var i = parseInt(b.getAttribute('data-p'), 10);
